@@ -64,10 +64,6 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
-    const match = await compare(password, user.password);
-    if (!match) {
-      throw new BadRequestException('Invalid email and/or password');
-    }
-    return match;
+    return await compare(password, user.password);
   }
 }
