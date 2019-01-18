@@ -4,12 +4,15 @@ import { IsEmail, IsOptional, IsString } from 'class-validator';
 export class UserUpdateDto {
   @IsString()
   @IsOptional()
-  @ApiModelPropertyOptional({ example: 'John Doe' })
+  @ApiModelPropertyOptional({ description: 'Full name', example: 'John Doe' })
   readonly name?: string;
 
   @IsEmail()
   @IsOptional()
-  @ApiModelPropertyOptional({ format: 'email' })
+  @ApiModelPropertyOptional({
+    description: 'Institutional email',
+    format: 'email',
+  })
   readonly email?: string;
 
   @IsString()

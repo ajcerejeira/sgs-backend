@@ -5,10 +5,10 @@ export class UserDetailDto {
   @ApiModelProperty()
   readonly id: number;
 
-  @ApiModelProperty({ example: 'John Doe' })
+  @ApiModelProperty({ description: 'Full name', example: 'John Doe' })
   readonly name: string;
 
-  @ApiModelProperty({ format: 'email' })
+  @ApiModelProperty({ description: 'Institutional email', format: 'email' })
   readonly email: string;
 
   constructor(user: User) {
