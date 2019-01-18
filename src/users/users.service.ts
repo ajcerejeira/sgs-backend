@@ -1,11 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
+import { ValidationError } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -56,5 +57,17 @@ export class UsersService {
     }
     await this.userRepository.delete(id);
     return new UserDetailDto(user);
+  }
+
+  async validate(email: string, password: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ email });
+    if (!user) {
+      throw new NotFoundException('The requested user could not be found');
+    }
+    const match = await compare(password, user.password);
+    if (!match) {
+      throw new BadRequestException('Invalid email and/or password');
+    }
+    return match;
   }
 }
