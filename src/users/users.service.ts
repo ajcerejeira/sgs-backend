@@ -1,7 +1,7 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
-import { Repository, DeleteResult } from 'typeorm';
+import { hash } from 'bcrypt';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
@@ -22,7 +22,7 @@ export class UsersService {
   async create(user: UserCreateDto): Promise<UserDetailDto> {
     const newUser = await this.userRepository.save({
       ...user,
-      password: await bcrypt.hash(user.password, 10),
+      password: await hash(user.password, 10),
     });
     return new UserDetailDto(newUser);
   }
@@ -38,9 +38,7 @@ export class UsersService {
       id,
       ...user,
       ...newUser,
-      password: user.password
-        ? await bcrypt.hash(user.password, 10)
-        : user.password,
+      password: user.password ? await hash(user.password, 10) : user.password,
     });
     return new UserDetailDto(updatedUser);
   }
