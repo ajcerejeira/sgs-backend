@@ -8,7 +8,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './user.entity';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
@@ -23,7 +22,7 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() user: User): Promise<UserDetailDto> {
+  create(@Body() user: UserCreateDto): Promise<UserDetailDto> {
     return this.usersService.create(user);
   }
 
