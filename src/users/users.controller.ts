@@ -8,21 +8,40 @@ import {
   Put,
   ValidationPipe,
 } from '@nestjs/common';
+import {
+  ApiUseTags,
+  ApiResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 
 @Controller('/api/users')
+@ApiUseTags('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @ApiOperation({ title: 'List all registered users' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of users',
+    type: [UserDetailDto],
+  })
   list(): Promise<UserDetailDto[]> {
     return this.usersService.list();
   }
 
   @Post()
+  @ApiOperation({ title: 'Registers a new user' })
+  @ApiCreatedResponse({ description: 'Created user', type: UserCreateDto })
+  @ApiBadRequestResponse({ description: 'Invalid body parameters' })
   create(
     @Body(new ValidationPipe()) user: UserCreateDto,
   ): Promise<UserDetailDto> {
@@ -30,11 +49,17 @@ export class UsersController {
   }
 
   @Get(':id')
+  @ApiOperation({ title: 'Gets the fields from a user' })
+  @ApiOkResponse({ description: 'User with the given ID', type: UserDetailDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
   detail(@Param('id') id: number): Promise<UserDetailDto> {
     return this.usersService.detail(id);
   }
 
   @Put(':id')
+  @ApiOperation({ title: 'Updates the fields from a user' })
+  @ApiOkResponse({ description: 'Updated user', type: UserDetailDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
   update(
     @Param('id') id: number,
     @Body(new ValidationPipe()) user: UserUpdateDto,
@@ -43,6 +68,9 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @ApiOperation({ title: 'Removes a user' })
+  @ApiOkResponse({ description: 'Removed user', type: UserDetailDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
   remove(@Param('id') id: number): Promise<UserDetailDto> {
     return this.usersService.remove(id);
   }
