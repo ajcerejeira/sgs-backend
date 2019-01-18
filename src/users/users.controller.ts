@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Put,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDetailDto } from './dto/user-detail.dto';
@@ -22,7 +23,9 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() user: UserCreateDto): Promise<UserDetailDto> {
+  create(
+    @Body(new ValidationPipe()) user: UserCreateDto,
+  ): Promise<UserDetailDto> {
     return this.usersService.create(user);
   }
 
@@ -34,14 +37,13 @@ export class UsersController {
   @Put(':id')
   update(
     @Param('id') id: number,
-    @Body() user: UserUpdateDto,
+    @Body(new ValidationPipe()) user: UserUpdateDto,
   ): Promise<UserDetailDto> {
     return this.usersService.update(id, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    this.usersService.remove(id);
-    return 'User removed successfully';
+  remove(@Param('id') id: number): Promise<UserDetailDto> {
+    return this.usersService.remove(id);
   }
 }

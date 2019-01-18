@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -29,11 +29,17 @@ export class UsersService {
 
   async detail(id: number): Promise<UserDetailDto> {
     const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException('The requested user could not be found');
+    }
     return new UserDetailDto(user);
   }
 
   async update(id: number, newUser: UserUpdateDto): Promise<UserDetailDto> {
     const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException('The requested user could not be found');
+    }
     const updatedUser = await this.userRepository.save({
       id,
       ...user,
@@ -43,7 +49,12 @@ export class UsersService {
     return new UserDetailDto(updatedUser);
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<UserDetailDto> {
+    const user = await this.userRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException('The requested user could not be found');
+    }
     await this.userRepository.delete(id);
+    return new UserDetailDto(user);
   }
 }
