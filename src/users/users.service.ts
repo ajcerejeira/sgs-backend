@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -6,7 +6,6 @@ import { User } from './user.entity';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
-import { ValidationError } from 'class-validator';
 
 @Injectable()
 export class UsersService {
