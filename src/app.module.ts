@@ -8,7 +8,9 @@ import { UsersModule } from './users/users.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/sgs',
+      url:
+        process.env.DATABASE_URL ||
+        'postgres://postgres:postgres@localhost:5432/sgs',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
