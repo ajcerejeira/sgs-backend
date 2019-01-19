@@ -13,6 +13,8 @@ async function bootstrap() {
       'users',
       'User management. These actions are only allowed for the admin.',
     )
+    .addTag('auth', 'Authentication with JWT.')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/docs', app, document);

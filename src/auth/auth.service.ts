@@ -11,7 +11,10 @@ export class AuthService {
   ) {}
 
   async login(payload: JwtPayload): Promise<string> {
-    const match = await await this.usersService.validate(payload.email, payload.password);
+    const match = await await this.usersService.validate(
+      payload.email,
+      payload.password,
+    );
     if (!match) {
       throw new UnauthorizedException();
     }

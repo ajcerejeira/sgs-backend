@@ -7,6 +7,7 @@ import {
   Param,
   Put,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -16,18 +17,22 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/api/users')
 @ApiUseTags('users')
+@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthGuard())
   @ApiOperation({ title: 'List all registered users' })
   @ApiResponse({
     status: 200,
