@@ -10,9 +10,10 @@ async function bootstrap() {
     .setTitle('SGS Backend API')
     .setDescription('API for the SGS (Sistema de Gestão de Sinistros) platform')
     .setVersion('1.0')
-    .addTag('users', 'User management')
-    .addTag('auth', 'Authentication with JWT')
+    .addTag('accidents', 'Accident management')
     .addTag('vehicles', 'Vehicle management')
+    .addTag('auth', 'Authentication with JWT')
+    .addTag('users', 'User management')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
