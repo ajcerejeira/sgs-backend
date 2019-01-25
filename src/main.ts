@@ -14,6 +14,7 @@ async function bootstrap() {
     .addTag('vehicles', 'Vehicle management')
     .addTag('auth', 'Authentication with JWT')
     .addTag('users', 'User management')
+    .setSchemes('https', 'http')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
