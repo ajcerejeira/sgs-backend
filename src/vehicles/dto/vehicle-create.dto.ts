@@ -1,10 +1,15 @@
-import { IsString, IsPositive, IsHexColor } from 'class-validator';
+import { IsString, IsPositive, IsHexColor, IsEnum, IsDate } from 'class-validator';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { VehicleType } from '../vehicle.entity';
 
 export class VehicleCreateDto {
   @IsString()
   @ApiModelPropertyOptional()
   register?: string;
+
+  @IsEnum(VehicleType)
+  @ApiModelPropertyOptional({ enum: VehicleType })
+  type?: VehicleType;
 
   // Brand
   @IsString()
@@ -30,4 +35,8 @@ export class VehicleCreateDto {
   @IsString()
   @ApiModelPropertyOptional({ example: 'Allianz' })
   insurance?: string;
+
+  @IsDate()
+  @ApiModelPropertyOptional({ format: 'date', type: 'string' })
+  expiresIn?: Date;
 }

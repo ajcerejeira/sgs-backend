@@ -1,5 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsString, IsNumber, IsPositive, IsHexColor } from 'class-validator';
+import { IsString, IsNumber, IsPositive, IsHexColor, IsEnum, IsDate } from 'class-validator';
+
+export enum VehicleType {
+  'Motociclos',
+  'Ligeiros',
+  'Pesados',
+}
 
 @Entity()
 export class Vehicle {
@@ -11,6 +17,10 @@ export class Vehicle {
   @Column({ nullable: true })
   @IsString()
   register?: string;
+
+  @Column({ nullable: true, enum: Object.keys(VehicleType) })
+  @IsEnum(VehicleType)
+  type?: VehicleType;
 
   // Brand
   @Column({ nullable: true })
@@ -37,4 +47,8 @@ export class Vehicle {
   @Column({ nullable: true })
   @IsString()
   insurance?: string;
+
+  @Column({ nullable: true })
+  @IsDate()
+  expiresIn?: Date;
 }
