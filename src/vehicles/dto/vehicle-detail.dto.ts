@@ -1,5 +1,6 @@
 import { IsString, IsNumber, IsPositive, IsHexColor } from 'class-validator';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
+import { Vehicle } from '../vehicle.entity';
 
 export class VehicleDetailDto {
   // Identification
@@ -29,9 +30,21 @@ export class VehicleDetailDto {
 
   // Insurance
   @IsString()
+  @ApiModelPropertyOptional()
   policy?: string;
 
   @IsString()
   @ApiModelPropertyOptional({ example: 'Allianz' })
   insurance?: string;
+
+  constructor(vehicle: Vehicle) {
+    this.id = vehicle.id;
+    this.register = vehicle.register;
+    this.make = vehicle.make;
+    this.model = vehicle.model;
+    this.year = vehicle.year;
+    this.color = vehicle.color;
+    this.policy = vehicle.policy;
+    this.insurance = vehicle.insurance;
+  }
 }

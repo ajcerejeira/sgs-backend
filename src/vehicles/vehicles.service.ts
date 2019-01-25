@@ -14,12 +14,12 @@ export class VehiclesService {
 
   async list(): Promise<VehicleDetailDto[]> {
     const vehicles = await this.vehicleRepository.find();
-    return [];
+    return vehicles.map(vehicle => new VehicleDetailDto(vehicle));
   }
 
   async create(vehicle: VehicleCreateDto): Promise<VehicleDetailDto> {
     const newVehicle = await this.vehicleRepository.save(vehicle);
-    return null;
+    return new VehicleDetailDto(newVehicle);
   }
 
   async detail(id: number): Promise<VehicleDetailDto> {
@@ -27,15 +27,23 @@ export class VehiclesService {
     if (!vehicle) {
       throw new NotFoundException('The requested vehicle could not be found');
     }
-    return null;
+    return new VehicleDetailDto(vehicle);
   }
 
-  async update(id: number, newVehicle: VehicleCreateDto): Promise<VehicleDetailDto> {
+  async update(
+    id: number,
+    newVehicle: VehicleCreateDto,
+  ): Promise<VehicleDetailDto> {
     const vehicle = await this.vehicleRepository.findOne(id);
     if (!vehicle) {
       throw new NotFoundException('The requested vehicle could not be found');
     }
-    return null;
+    const updatedVehicle = await this.vehicleRepository.save({
+      id,
+      ...vehicle,
+      ...newVehicle,
+    });
+    return new VehicleDetailDto(updatedVehicle);
   }
 
   async delete(id: number): Promise<VehicleDetailDto> {
@@ -44,6 +52,6 @@ export class VehiclesService {
       throw new NotFoundException('The requested vehicle could not be found');
     }
     await this.vehicleRepository.delete(id);
-    return null;
+    return new VehicleDetailDto(vehicle);
   }
 }

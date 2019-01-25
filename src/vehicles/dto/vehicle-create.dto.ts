@@ -24,6 +24,7 @@ export class VehicleCreateDto {
 
   // Insurance
   @IsString()
+  @ApiModelPropertyOptional()
   policy?: string;
 
   @IsString()
