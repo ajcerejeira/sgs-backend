@@ -8,6 +8,7 @@ import {
   Put,
   ValidationPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -24,6 +25,8 @@ import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Controller('/api/users')
 @ApiUseTags('users')
@@ -39,7 +42,7 @@ export class UsersController {
     description: 'List of users',
     type: [UserDetailDto],
   })
-  list(): Promise<UserDetailDto[]> {
+  list(@Req() req: any): Promise<UserDetailDto[]> {
     return this.usersService.list();
   }
 
@@ -76,7 +79,7 @@ export class UsersController {
   @ApiOperation({ title: 'Removes a user' })
   @ApiOkResponse({ description: 'Removed user', type: UserDetailDto })
   @ApiNotFoundResponse({ description: 'User not found' })
-  remove(@Param('id') id: number): Promise<UserDetailDto> {
-    return this.usersService.remove(id);
+  delete(@Param('id') id: number): Promise<UserDetailDto> {
+    return this.usersService.delete(id);
   }
 }

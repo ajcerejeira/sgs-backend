@@ -49,7 +49,7 @@ export class UsersService {
     return new UserDetailDto(updatedUser);
   }
 
-  async remove(id: number): Promise<UserDetailDto> {
+  async delete(id: number): Promise<UserDetailDto> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
@@ -58,11 +58,11 @@ export class UsersService {
     return new UserDetailDto(user);
   }
 
-  async validate(email: string, password: string): Promise<boolean> {
+  async validate(email: string, password: string): Promise<UserDetailDto | null> {
     const user = await this.userRepository.findOne({ email });
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
-    return await compare(password, user.password);
+    return (await compare(password, user.password)) ? new UserDetailDto(user) : null;
   }
 }

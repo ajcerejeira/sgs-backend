@@ -21,7 +21,7 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async validate(payload: JwtPayload): Promise<boolean> {
+  async validate(payload: JwtPayload) {
     return await this.usersService.validate(payload.email, payload.password);
   }
 }
