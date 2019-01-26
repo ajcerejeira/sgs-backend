@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { Accident } from '../accident.entity';
-import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
+import { VehicleDetailDto } from '../../vehicles/dto/vehicle-detail.dto';
 
 export class AccidentDetailDto {
   @IsNumber()
