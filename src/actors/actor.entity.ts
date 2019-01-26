@@ -83,7 +83,7 @@ export class Actor {
   @IsString()
   injury?: string;
 
-  @Column({ nullable: true })
+  @Column('float', { nullable: true })
   @IsNumber()
   alcoholTest?: number;
 }
