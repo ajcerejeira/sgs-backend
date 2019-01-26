@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Put,
+  Res,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   ApiOperation,
@@ -17,9 +19,11 @@ import {
   ApiUseTags,
   ApiResponse,
 } from '@nestjs/swagger';
+import * as pdf from 'html-pdf';
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { AccidentsService } from './accidents.service';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
+import { Response } from 'express';
 
 @Controller('/api/accidents')
 @ApiUseTags('accidents')
@@ -76,4 +80,19 @@ export class AccidentsController {
   delete(@Param('id') id: number) {
     return this.accidentsService.delete(id);
   }
+
+  @Get(':id/report')
+  async accidentReport(@Param('id') id: number, @Res() res: Response) {
+    const accident = await this.accidentsService.detail(id);
+    res.render('report.hbs', { accident }, (err, html) =>
+      pdf.create(html).toBuffer((pdfErr, buffer) => {
+        if (err) {
+          throw new InternalServerErrorException('Failed to create the PDF');
+        }
+        res.contentType('application/pdf');
+        res.end(buffer);
+      }),
+    );
+  }
+
 }
