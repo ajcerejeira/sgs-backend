@@ -20,6 +20,8 @@ export class Accident {
   @IsJSON()
   sketch?: GeoJSON;
 
-  @OneToMany(type => Vehicle, vehicle => vehicle.accident, { onDelete: 'CASCADE' })
+  @OneToMany(type => Vehicle, vehicle => vehicle.accident, {
+    onDelete: 'CASCADE',
+  })
   vehicles: Vehicle[];
 }

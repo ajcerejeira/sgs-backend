@@ -38,8 +38,8 @@ export class AccidentDetailDto {
     this.date = accident.date;
     this.location = accident.location;
     this.address = null;
-    this.vehicles = accident.vehicles.map(vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }));
+    this.vehicles = accident.vehicles.map(
+      vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }),
+    );
   }
-
-  
 }

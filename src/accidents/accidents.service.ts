@@ -18,7 +18,7 @@ export class AccidentsService {
     const accidents = await this.accidentRepository.find({
       relations: ['vehicles'],
     });
-    const res = accidents.map(async (accident) => {
+    const res = accidents.map(async accident => {
       const accidentDto = new AccidentDetailDto(accident);
       if (accident.location && accident.location.length >= 2) {
         accidentDto.address = await this.geocoderService.getAddress(
