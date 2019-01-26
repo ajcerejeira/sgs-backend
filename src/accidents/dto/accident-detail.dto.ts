@@ -9,6 +9,7 @@ import {
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { Accident } from '../accident.entity';
 import { VehicleDetailDto } from '../../vehicles/dto/vehicle-detail.dto';
+import { GeocoderService } from '../geocoder.service';
 
 export class AccidentDetailDto {
   @IsNumber()
@@ -42,9 +43,15 @@ export class AccidentDetailDto {
     this.date = accident.date;
     this.location = accident.location;
     this.address = null;
-    this.mapImg = null;
+    this.mapImg = this.location && this.location.length >= 2 ?  `https://maps.googleapis.com/maps/api/staticmap?center=${this.location[0]},${this.location[1]}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : null;
     this.vehicles = accident.vehicles ? accident.vehicles.map(
       vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }),
     ) : [];
+  }
+
+  async loadAddress(geocoder: GeocoderService) {
+    if (this.location && this.location.length >= 2) {
+      this.address = await geocoder.getAddress(this.location[0], this.location[1]);
+    }
   }
 }

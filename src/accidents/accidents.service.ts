@@ -21,16 +21,8 @@ export class AccidentsService {
     const accidentDtos = [];
     for (let accident of accidents) {
       const accidentDto = new AccidentDetailDto(accident);
-      if (accident.location && accident.location.length >= 2) {
-        const lat = accident.location[0];
-        const lon = accident.location[1];
-        accidentDto.address = await this.geocoderService.getAddress(
-          lat,
-          lon,
-        );
-        accidentDto.mapImg = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`;
-        accidentDtos.push(accidentDto);
-      }
+      await accidentDto.loadAddress(this.geocoderService);
+      accidentDtos.push(accidentDto);
     }
     return accidentDtos;
   }
@@ -49,16 +41,7 @@ export class AccidentsService {
       throw new NotFoundException('The requested accident could not be found');
     }
     const accidentDto = new AccidentDetailDto(accident);
-    if (accident.location && accident.location.length >= 2) {
-      const lat = accident.location[0];
-      const lon = accident.location[1];
-      accidentDto.address = await this.geocoderService.getAddress(
-        lat,
-        lon,
-      );
-      accidentDto.mapImg = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`;
-
-    }
+    await accidentDto.loadAddress(this.geocoderService);
     return accidentDto;
   }
 
