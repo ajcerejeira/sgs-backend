@@ -21,10 +21,13 @@ export class AccidentsService {
     const res = accidents.map(async accident => {
       const accidentDto = new AccidentDetailDto(accident);
       if (accident.location && accident.location.length >= 2) {
+        const lat = accident.location[0];
+        const lon = accident.location[1];
         accidentDto.address = await this.geocoderService.getAddress(
-          accident.location[0],
-          accident.location[1],
+          lat,
+          lon,
         );
+        accidentDto.mapImg = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`;
       }
       return accidentDto;
     });
@@ -46,10 +49,14 @@ export class AccidentsService {
     }
     const accidentDto = new AccidentDetailDto(accident);
     if (accident.location && accident.location.length >= 2) {
+      const lat = accident.location[0];
+      const lon = accident.location[1];
       accidentDto.address = await this.geocoderService.getAddress(
-        accident.location[0],
-        accident.location[1],
+        lat,
+        lon,
       );
+      accidentDto.mapImg = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`;
+
     }
     return accidentDto;
   }
