@@ -53,12 +53,11 @@ export class VehiclesService {
     return new VehicleDetailDto(updatedVehicle);
   }
 
-  async delete(id: number): Promise<VehicleDetailDto> {
+  async delete(id: number) {
     const vehicle = await this.vehicleRepository.findOne(id);
     if (!vehicle) {
       throw new NotFoundException('The requested vehicle could not be found');
     }
     await this.vehicleRepository.delete(id);
-    return new VehicleDetailDto(vehicle);
   }
 }

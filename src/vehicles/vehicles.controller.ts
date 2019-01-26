@@ -74,9 +74,9 @@ export class VehiclesController {
 
   @Delete(':id')
   @ApiOperation({ title: 'Removes a vehicle' })
-  @ApiOkResponse({ description: 'Removed vehicle', type: VehicleDetailDto })
+  @ApiOkResponse({ description: 'Removed vehicle' })
   @ApiNotFoundResponse({ description: 'Vehicle not found' })
-  delete(@Param('id') id: number): Promise<VehicleDetailDto> {
+  delete(@Param('id') id: number) {
     return this.vehiclesService.delete(id);
   }
 }
