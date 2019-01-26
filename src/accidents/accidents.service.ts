@@ -20,7 +20,7 @@ export class AccidentsService {
     });
     const res = accidents.map(async (accident) => {
       const accidentDto = new AccidentDetailDto(accident);
-      if (accident.location) {
+      if (accident.location && accident.location.length >= 2) {
         accidentDto.address = await this.geocoderService.getAddress(
           accident.location[0],
           accident.location[1],
@@ -45,7 +45,7 @@ export class AccidentsService {
       throw new NotFoundException('The requested accident could not be found');
     }
     const accidentDto = new AccidentDetailDto(accident);
-    if (accident.location) {
+    if (accident.location && accident.location.length >= 2) {
       accidentDto.address = await this.geocoderService.getAddress(
         accident.location[0],
         accident.location[1],

@@ -20,8 +20,8 @@ export class VehicleCreateDto {
 
   @IsEnum(VehicleType)
   @IsOptional()
-  @ApiModelPropertyOptional({ enum: VehicleType })
-  type?: VehicleType;
+  @ApiModelPropertyOptional({ type: 'string', enum: Object.keys(VehicleType) })
+  type?: string;
 
   // Brand
   @IsString()
