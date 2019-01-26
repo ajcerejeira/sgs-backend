@@ -28,8 +28,8 @@ export class Vehicle {
   register?: string;
 
   @Column({ nullable: true, enum: Object.keys(VehicleType) })
-  @IsEnum(VehicleType)
-  type?: VehicleType;
+  @IsString()
+  type?: string;
 
   // Brand
   @Column({ nullable: true })

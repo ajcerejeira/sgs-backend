@@ -2,8 +2,6 @@ import {
   IsString,
   IsPositive,
   IsHexColor,
-  IsEnum,
-  IsDate,
   IsOptional,
   IsArray,
   IsNumber,
@@ -18,7 +16,7 @@ export class VehicleCreateDto {
   @ApiModelPropertyOptional()
   register?: string;
 
-  @IsEnum(VehicleType)
+  @IsString()
   @IsOptional()
   @ApiModelPropertyOptional({ type: 'string', enum: Object.keys(VehicleType) })
   type?: string;
