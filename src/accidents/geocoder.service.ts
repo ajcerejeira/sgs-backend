@@ -12,7 +12,6 @@ export class GeocoderService {
 
   async getAddress(lat: number, lng: number): Promise<string> {
     const url = `${this.url}/${this.format}?latlng=${lat},${lng}&key=${this.key}`;
-    return '';
-  //  return this.httpService.get(url).pipe(res => { const address = res.data.results[0].formatted_address; return '' } ).toPromise();
+    return this.httpService.get(url).toPromise().then(res => res.data.results[0].formatted_address);
   }
 }

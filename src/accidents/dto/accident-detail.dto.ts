@@ -8,6 +8,7 @@ import {
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { Accident } from '../accident.entity';
 import { VehicleDetailDto } from '../../vehicles/dto/vehicle-detail.dto';
+import { GeocoderService } from '../geocoder.service';
 
 export class AccidentDetailDto {
   @IsNumber()
@@ -24,6 +25,10 @@ export class AccidentDetailDto {
   @ApiModelProperty({ type: [Number] })
   location?: number[];
 
+  @IsOptional()
+  @ApiModelPropertyOptional({ example: 'Rua da Ponte, 47 Lousado' })
+  address?: string;
+
   @IsArray()
   @ApiModelProperty()
   vehicles: VehicleDetailDto[];
@@ -32,6 +37,9 @@ export class AccidentDetailDto {
     this.id = accident.id;
     this.date = accident.date;
     this.location = accident.location;
+    this.address = null;
     this.vehicles = accident.vehicles.map(vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }));
   }
+
+  
 }

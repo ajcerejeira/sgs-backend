@@ -18,7 +18,17 @@ export class AccidentsService {
     const accidents = await this.accidentRepository.find({
       relations: ['vehicles'],
     });
-    return accidents.map(accident => new AccidentDetailDto(accident));
+    const res = accidents.map(async (accident) => {
+      const accidentDto = new AccidentDetailDto(accident);
+      if (accident.location) {
+        accidentDto.address = await this.geocoderService.getAddress(
+          accident.location[0],
+          accident.location[1],
+        );
+      }
+      return accidentDto;
+    });
+    return await Promise.all(res);
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
@@ -34,14 +44,14 @@ export class AccidentsService {
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
+    const accidentDto = new AccidentDetailDto(accident);
     if (accident.location) {
-      const lat = accident.location[0];
-      const lng = accident.location[1];
-      const address = await this.geocoderService.getAddress(lat, lng);
-      console.log(address);
+      accidentDto.address = await this.geocoderService.getAddress(
+        accident.location[0],
+        accident.location[1],
+      );
     }
-
-    return new AccidentDetailDto(accident);
+    return accidentDto;
   }
 
   async update(
