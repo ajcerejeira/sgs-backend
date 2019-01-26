@@ -31,7 +31,7 @@ export class ActorDetailDto {
   @ApiModelPropertyOptional({ type: 'string', format: 'date' })
   expires?: string;
 
-  @IsDateString()
+  @IsString()
   @IsOptional()
   @ApiModelPropertyOptional()
   emitedBy?: string;

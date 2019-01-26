@@ -26,7 +26,7 @@ export class Actor {
   expires?: string;
 
   @Column({ nullable: true })
-  @IsDateString()
+  @IsString()
   emitedBy?: string;
 
   // Personal data
