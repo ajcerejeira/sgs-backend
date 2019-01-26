@@ -71,9 +71,9 @@ export class AccidentsController {
 
   @Delete(':id')
   @ApiOperation({ title: 'Removes an accident' })
-  @ApiOkResponse({ description: 'Removed accident', type: AccidentDetailDto })
+  @ApiOkResponse({ description: 'Removed accident' })
   @ApiNotFoundResponse({ description: 'Accident not found' })
-  delete(@Param('id') id: number): Promise<AccidentDetailDto> {
+  delete(@Param('id') id: number) {
     return this.accidentsService.delete(id);
   }
 }

@@ -65,6 +65,6 @@ export class Vehicle {
   @Column('int', { array: true, nullable: true })
   damages?: number[];
 
-  @ManyToOne(type => Accident, accident => accident.vehicles)
+  @ManyToOne(type => Accident, accident => accident.vehicles, { onDelete: 'CASCADE' })
   accident: Accident;
 }

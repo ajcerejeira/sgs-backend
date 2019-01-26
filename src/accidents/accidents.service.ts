@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, createQueryBuilder } from 'typeorm';
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { Accident } from './accident.entity';
+import { GeocoderService } from './geocoder.service';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class AccidentsService {
   constructor(
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
+    private readonly geocoderService: GeocoderService,
   ) {}
 
   async list(): Promise<AccidentDetailDto[]> {
@@ -20,12 +22,8 @@ export class AccidentsService {
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
-    const newAccident = new Accident();
-    newAccident.date = accident.date;
-    newAccident.location = accident.location;
-    newAccident.vehicles = [];
     return new AccidentDetailDto(
-      await this.accidentRepository.save(newAccident),
+      await this.accidentRepository.save({ ...accident, vehicles: [] }),
     );
   }
 
@@ -36,6 +34,13 @@ export class AccidentsService {
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
+    if (accident.location) {
+      const lat = accident.location[0];
+      const lng = accident.location[1];
+      const address = await this.geocoderService.getAddress(lat, lng);
+      console.log(address);
+    }
+
     return new AccidentDetailDto(accident);
   }
 
@@ -55,12 +60,11 @@ export class AccidentsService {
     return new AccidentDetailDto(updatedVehicle);
   }
 
-  async delete(id: number): Promise<AccidentDetailDto> {
+  async delete(id: number) {
     const accident = await this.accidentRepository.findOne(id);
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
-    await this.accidentRepository.delete(accident);
-    return new AccidentDetailDto(accident);
+    await this.accidentRepository.remove(accident);
   }
 }
