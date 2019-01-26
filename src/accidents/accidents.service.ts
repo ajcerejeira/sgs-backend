@@ -2,19 +2,17 @@ import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, createQueryBuilder } from 'typeorm';
 import { AccidentCreateDto } from './dto/accident-create.dto';
-import { Accident, AccidentVehicle } from './accident.entity';
+import { Accident } from './accident.entity';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
-import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
-import { VehicleCreateDto } from 'src/vehicles/dto/vehicle-create.dto';
 import { Vehicle } from 'src/vehicles/vehicle.entity';
+import { VehicleCreateDto } from 'src/vehicles/dto/vehicle-create.dto';
+import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
 
 @Injectable()
 export class AccidentsService {
   constructor(
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
-    @InjectRepository(AccidentVehicle)
-    private readonly accidentVehicleRepository: Repository<AccidentVehicle>,
     @InjectRepository(Vehicle)
     private readonly vehicleRepository: Repository<Vehicle>,
   ) {}
@@ -28,6 +26,7 @@ export class AccidentsService {
     const newAccident = new Accident();
     newAccident.date = accident.date;
     newAccident.location = accident.location;
+    newAccident.vehicles = [];
     return new AccidentDetailDto(
       await this.accidentRepository.save(newAccident),
     );
@@ -69,20 +68,12 @@ export class AccidentsService {
   //
   // Vehicles
   //
-  async vehicleList(accidentId: number): Promise<VehicleDetailDto[]> {
-    const accident = await this.accidentRepository.findOne(accidentId);
+  async vehicleList(accidentId: number): Promise<any> {
+    const accident = await this.accidentRepository.findOne(accidentId, { relations: ["vehicles"] });
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
-    const vehicles = await this.accidentRepository
-      .createQueryBuilder('accident')
-      .innerJoin('accident.vehicles', 'accidentVehicle')
-      .innerJoin('accidentVehicle.vehicle', 'vehicle')
-      .where('accident.id = :accidentId', { accidentId })
-      .getMany();
-
-    console.log(vehicles);
-    return [];
+    return accident.vehicles;
   }
 
   async vehicleCreate(
@@ -94,11 +85,12 @@ export class AccidentsService {
       throw new NotFoundException('The requested accident could not be found');
     }
     const newVehicle = await this.vehicleRepository.save(vehicle);
-    const accidentVehicle = await this.accidentVehicleRepository.save({
-      accident: accident.id,
-      vehicle: newVehicle.id,
-      damages: [1, 2, 3],
-    });
+    if (accident.vehicles) {
+      accident.vehicles.push(newVehicle);
+    } else {
+      accident.vehicles = [newVehicle];
+    }
+    await this.accidentRepository.save(accident);
     return newVehicle;
   }
 }

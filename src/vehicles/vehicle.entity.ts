@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import {
   IsString,
   IsNumber,
@@ -7,11 +7,12 @@ import {
   IsEnum,
   IsDate,
 } from 'class-validator';
+import { Accident } from 'src/accidents/accident.entity';
 
 export enum VehicleType {
-  Motorcicle = 'Motociclos',
-  Light = 'Ligeiros',
-  Heavy = 'Pesados',
+  Motorcicle = 'Motorcicle',
+  Light = 'Light',
+  Heavy = 'Heavy',
 }
 
 @Entity()
@@ -58,4 +59,8 @@ export class Vehicle {
   @Column({ nullable: true })
   @IsDate()
   expiresIn?: Date;
+
+  // Accident related
+  @Column('int', { array: true, nullable: true })
+  damages?: number[];
 }
