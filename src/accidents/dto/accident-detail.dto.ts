@@ -32,6 +32,6 @@ export class AccidentDetailDto {
     this.id = accident.id;
     this.date = accident.date;
     this.location = accident.location;
-    this.vehicles = accident.vehicles.map(vehicle => ({ ...vehicle, accident: vehicle.id }));
+    this.vehicles = accident.vehicles.map(vehicle => ({ ...vehicle, accident: vehicle.accident.id }));
   }
 }
