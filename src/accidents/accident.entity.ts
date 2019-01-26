@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { IsNumber, IsDate, IsJSON, IsOptional } from 'class-validator';
+import { IsNumber, IsDate, IsJSON, IsOptional, IsDateString } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
 import { Vehicle } from '../vehicles/vehicle.entity';
 
@@ -16,8 +16,8 @@ export class Accident {
   id: number;
 
   @Column({ nullable: true })
-  @IsDate()
-  date?: Date;
+  @IsDateString()
+  date?: string;
 
   @Column('float', { array: true, nullable: true })
   location?: Position;

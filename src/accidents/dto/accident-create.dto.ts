@@ -1,11 +1,11 @@
-import { IsDate, IsArray, IsOptional } from 'class-validator';
+import { IsDate, IsArray, IsOptional, IsDateString } from 'class-validator';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 
 export class AccidentCreateDto {
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   @ApiModelPropertyOptional({ format: 'date', type: 'string' })
-  date?: Date;
+  date?: string;
 
   @IsArray()
   @IsOptional()
