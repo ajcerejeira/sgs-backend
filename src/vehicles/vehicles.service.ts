@@ -29,7 +29,7 @@ export class VehiclesService {
   }
 
   async detail(id: number): Promise<VehicleDetailDto> {
-    const vehicle = await this.vehicleRepository.findOne(id);
+    const vehicle = await this.vehicleRepository.findOne(id, { relations: ['accident']});
     if (!vehicle) {
       throw new NotFoundException('The requested vehicle could not be found');
     }
