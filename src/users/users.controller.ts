@@ -8,6 +8,7 @@ import {
   Put,
   ValidationPipe,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -23,6 +24,7 @@ import { UsersService } from './users.service';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/api/users')
 @ApiUseTags('users')
@@ -48,6 +50,16 @@ export class UsersController {
     @Body(new ValidationPipe()) user: UserCreateDto,
   ): Promise<UserDetailDto> {
     return this.usersService.create(user);
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard())
+  @ApiOperation({ title: 'Shows current logged user'})
+  @ApiOkResponse({ description: 'Current logged user', type: UserDetailDto })
+  @ApiBearerAuth()
+  me(@Req() req): Promise<UserDetailDto> {
+    console.log(req);
+    return req.user;
   }
 
   @Get(':id')
