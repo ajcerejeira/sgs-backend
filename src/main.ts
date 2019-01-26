@@ -12,6 +12,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('accidents', 'Accident management')
     .addTag('vehicles', 'Vehicle management')
+    .addTag('actors', 'Actor management')
     .addTag('auth', 'Authentication with JWT')
     .addTag('users', 'User management')
     .setSchemes('https', 'http')
