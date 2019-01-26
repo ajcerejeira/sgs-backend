@@ -18,6 +18,7 @@ import {
   ApiNotFoundResponse,
   ApiUseTags,
   ApiResponse,
+  ApiProduces,
 } from '@nestjs/swagger';
 import * as pdf from 'html-pdf';
 import { AccidentCreateDto } from './dto/accident-create.dto';
@@ -82,6 +83,10 @@ export class AccidentsController {
   }
 
   @Get(':id/report')
+  @ApiOperation({ title: 'Generates the PDF report of the accident' })
+  @ApiOkResponse({ description: 'Report of the accident' })
+  @ApiProduces('application-pdf')
+  @ApiNotFoundResponse({ description: 'Accident not found' })
   async accidentReport(@Param('id') id: number, @Res() res: Response) {
     const accident = await this.accidentsService.detail(id);
     res.render('report.hbs', { accident }, (err, html) =>
