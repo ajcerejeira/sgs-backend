@@ -108,11 +108,10 @@ export class AccidentsController {
     return this.accidentsService.vehicleCreate(accidentId, vehicle);
   }
 
-  @Delete(':accidentId/vehicles/:vehicleId')
+  @Get(':accidentId/vehicles/:vehicleId')
   @ApiNotFoundResponse({ description: 'Accident or vehicle not found' })
-  @ApiOperation({ title: 'Removes a vehicle from an accident' })
-  @ApiOkResponse({ description: 'Removed vehicle', type: VehicleDetailDto })
-  vehicleDelete(@Param('accidentId') accidentId: number, @Param('vehicleId') vehicleId: number) {
-
+  @ApiOperation({ title: 'Gets the fields from the vehicle' })
+  VehicleDetailDto(@Param('accidentId') accidentId: number, @Param('vehicleId') vehicleId: number) {
+    return this.accidentsService.vehicleDetail(accidentId, vehicleId);
   }
 }

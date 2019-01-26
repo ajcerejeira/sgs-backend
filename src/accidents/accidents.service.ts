@@ -69,7 +69,7 @@ export class AccidentsService {
   // Vehicles
   //
   async vehicleList(accidentId: number): Promise<any> {
-    const accident = await this.accidentRepository.findOne(accidentId, { relations: ["vehicles"] });
+    const accident = await this.accidentRepository.findOne(accidentId, { relations: ['vehicles'] });
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
@@ -92,5 +92,19 @@ export class AccidentsService {
     }
     await this.accidentRepository.save(accident);
     return newVehicle;
+  }
+
+  async vehicleDetail(accidentId: number, vehicleId: number): Promise<VehicleDetailDto> {
+    console.log('accidentId', accidentId);
+    console.log('vehicleId', vehicleId);
+    const accident = await this.accidentRepository.findOne(accidentId, { relations: ['vehicles'] });
+    if (!accident) {
+      throw new NotFoundException('The requested accident could not be found');
+    }
+    const vehicle = accident.vehicles ? accident.vehicles.find(v => (console.log(v.id, vehicleId), v.id == vehicleId)) : null;
+    if (!vehicle) {
+      throw new NotFoundException('The requested vehicle could not be found');
+    }
+    return vehicle;
   }
 }
