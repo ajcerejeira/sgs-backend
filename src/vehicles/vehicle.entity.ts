@@ -6,6 +6,7 @@ import {
   IsHexColor,
   IsEnum,
   IsDate,
+  IsDateString,
 } from 'class-validator';
 import { Accident } from '../accidents/accident.entity';
 
@@ -57,8 +58,8 @@ export class Vehicle {
   insurance?: string;
 
   @Column({ nullable: true })
-  @IsDate()
-  expiresIn?: Date;
+  @IsDateString()
+  expiresIn?: string;
 
   // Accident related
   @Column('int', { array: true, nullable: true })
