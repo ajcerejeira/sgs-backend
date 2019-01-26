@@ -23,12 +23,9 @@ import { UsersService } from './users.service';
 import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/api/users')
-@UseGuards(AuthGuard())
 @ApiUseTags('users')
-@ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
