@@ -50,7 +50,7 @@ export class ActorDetailDto {
 
   @IsString()
   @IsOptional()
-  nacionality?: string;
+  nationality?: string;
 
   @IsString()
   @IsOptional()
@@ -100,7 +100,7 @@ export class ActorDetailDto {
     this.birth = actor.birth;
     this.email = actor.email;
     this.phone = actor.phone;
-    this.nacionality = actor.nacionality;
+    this.nationality = actor.nationality;
     this.naturality = actor.naturality;
     this.parentage = actor.parentage;
     this.locality = actor.locality;

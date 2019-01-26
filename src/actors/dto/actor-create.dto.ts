@@ -44,7 +44,7 @@ export class ActorCreateDto {
 
   @IsString()
   @IsOptional()
-  nacionality?: string;
+  nationality?: string;
 
   @IsString()
   @IsOptional()

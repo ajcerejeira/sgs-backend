@@ -49,7 +49,7 @@ export class Actor {
 
   @Column({ nullable: true })
   @IsString()
-  nacionality?: string;
+  nationality?: string;
 
   @Column({ nullable: true })
   @IsString()
