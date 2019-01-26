@@ -54,7 +54,7 @@ export class Actor {
   @IsString()
   naturality?: string;
 
-  @Column('char', { array: true, nullable: true })
+  @Column('text', { array: true, nullable: true })
   parentage?: string[];
 
   // Actor location
