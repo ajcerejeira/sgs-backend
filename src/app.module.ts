@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -19,8 +19,8 @@ import { AccidentsModule } from './accidents/accidents.module';
     }),
     UsersModule,
     AuthModule,
-    VehiclesModule,
-    AccidentsModule,
+    forwardRef(() => VehiclesModule),
+    forwardRef(() => AccidentsModule),
   ],
   controllers: [AppController],
   providers: [AppService],

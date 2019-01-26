@@ -4,22 +4,17 @@ import { Repository, createQueryBuilder } from 'typeorm';
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { Accident } from './accident.entity';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
-import { Vehicle } from '../vehicles/vehicle.entity';
-import { VehicleCreateDto } from '../vehicles/dto/vehicle-create.dto';
-import { VehicleDetailDto } from '../vehicles/dto/vehicle-detail.dto';
 
 @Injectable()
 export class AccidentsService {
   constructor(
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
-    @InjectRepository(Vehicle)
-    private readonly vehicleRepository: Repository<Vehicle>,
   ) {}
 
   async list(): Promise<AccidentDetailDto[]> {
-    const accidents = await this.accidentRepository.find();
-    return accidents.map(vehicle => new AccidentDetailDto(vehicle));
+    const accidents = await this.accidentRepository.find({ relations: ['vehicles'] });
+    return accidents.map(accident => new AccidentDetailDto(accident));
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {

@@ -2,10 +2,9 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from 'typeorm';
-import { IsNumber, IsDate, IsJSON, IsOptional, IsDateString } from 'class-validator';
+import { IsNumber, IsJSON, IsDateString } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
 import { Vehicle } from '../vehicles/vehicle.entity';
 
@@ -26,7 +25,6 @@ export class Accident {
   @IsJSON()
   sketch?: GeoJSON;
 
-  @ManyToMany(type => Vehicle)
-  @JoinTable()
+  @OneToMany(type => Vehicle, vehicle => vehicle.accident)
   vehicles: Vehicle[];
 }

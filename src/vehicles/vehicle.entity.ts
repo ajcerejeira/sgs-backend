@@ -7,7 +7,7 @@ import {
   IsEnum,
   IsDate,
 } from 'class-validator';
-import { Accident } from 'src/accidents/accident.entity';
+import { Accident } from '../accidents/accident.entity';
 
 export enum VehicleType {
   Motorcicle = 'Motorcicle',
@@ -63,4 +63,7 @@ export class Vehicle {
   // Accident related
   @Column('int', { array: true, nullable: true })
   damages?: number[];
+
+  @ManyToOne(type => Accident, accident => accident.vehicles)
+  accident: Accident;
 }
