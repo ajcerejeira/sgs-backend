@@ -8,7 +8,6 @@ import {
   Put,
   ValidationPipe,
   UseGuards,
-  Req,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -25,24 +24,22 @@ import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtService } from '@nestjs/jwt';
-import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Controller('/api/users')
+@UseGuards(AuthGuard())
 @ApiUseTags('users')
 @ApiBearerAuth()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @UseGuards(AuthGuard())
   @ApiOperation({ title: 'List all registered users' })
   @ApiResponse({
     status: 200,
     description: 'List of users',
     type: [UserDetailDto],
   })
-  list(@Req() req: any): Promise<UserDetailDto[]> {
+  list(): Promise<UserDetailDto[]> {
     return this.usersService.list();
   }
 

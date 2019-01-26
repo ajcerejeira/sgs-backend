@@ -58,11 +58,16 @@ export class UsersService {
     return new UserDetailDto(user);
   }
 
-  async validate(email: string, password: string): Promise<UserDetailDto | null> {
+  async validate(
+    email: string,
+    password: string,
+  ): Promise<UserDetailDto | null> {
     const user = await this.userRepository.findOne({ email });
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
-    return (await compare(password, user.password)) ? new UserDetailDto(user) : null;
+    return (await compare(password, user.password))
+      ? new UserDetailDto(user)
+      : null;
   }
 }

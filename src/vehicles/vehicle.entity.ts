@@ -1,10 +1,17 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { IsString, IsNumber, IsPositive, IsHexColor, IsEnum, IsDate } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsPositive,
+  IsHexColor,
+  IsEnum,
+  IsDate,
+} from 'class-validator';
 
 export enum VehicleType {
-  'Motociclos',
-  'Ligeiros',
-  'Pesados',
+  Motorcicle = 'Motociclos',
+  Light = 'Ligeiros',
+  Heavy = 'Pesados',
 }
 
 @Entity()

@@ -20,6 +20,8 @@ import {
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { AccidentsService } from './accidents.service';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
+import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
+import { VehicleCreateDto } from 'src/vehicles/dto/vehicle-create.dto';
 
 @Controller('/api/accidents')
 @ApiUseTags('accidents')
@@ -75,5 +77,34 @@ export class AccidentsController {
   @ApiNotFoundResponse({ description: 'Accident not found' })
   delete(@Param('id') id: number): Promise<AccidentDetailDto> {
     return this.accidentsService.delete(id);
+  }
+
+  //
+  // Vehicles
+  //
+  @Get(':id/vehicles')
+  @ApiOperation({ title: 'List all vehicles of the accident' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of vehicles',
+    type: [VehicleDetailDto],
+  })
+  @ApiNotFoundResponse({ description: 'Accident not found' })
+  vehicleList(@Param('id') accidentId: number): Promise<VehicleDetailDto[]> {
+    return this.accidentsService.vehicleList(accidentId);
+  }
+
+  @Post(':id/vehicles')
+  @ApiOperation({ title: 'Registers a new vehicle in the accident' })
+  @ApiCreatedResponse({
+    description: 'Created vehicle',
+  })
+  @ApiBadRequestResponse({ description: 'Invalid body parameters' })
+  @ApiNotFoundResponse({ description: 'Accident not found' })
+  vehicleCreate(
+    @Param('id') accidentId: number,
+    @Body(new ValidationPipe()) vehicle: VehicleCreateDto,
+  ): Promise<VehicleDetailDto> {
+    return this.accidentsService.vehicleCreate(accidentId, vehicle);
   }
 }
