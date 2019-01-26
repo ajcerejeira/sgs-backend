@@ -43,8 +43,8 @@ export class AccidentDetailDto {
     this.location = accident.location;
     this.address = null;
     this.mapImg = null;
-    this.vehicles = accident.vehicles.map(
+    this.vehicles = accident.vehicles ? accident.vehicles.map(
       vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }),
-    );
+    ) : [];
   }
 }
