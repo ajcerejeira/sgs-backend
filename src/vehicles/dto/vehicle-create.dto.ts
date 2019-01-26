@@ -6,8 +6,9 @@ import {
   IsDate,
   IsOptional,
   IsArray,
+  IsNumber,
 } from 'class-validator';
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { VehicleType } from '../vehicle.entity';
 
 export class VehicleCreateDto {
@@ -62,4 +63,8 @@ export class VehicleCreateDto {
   @IsArray()
   @ApiModelPropertyOptional()
   damages?: number[];
+
+  @IsNumber()
+  @ApiModelProperty()
+  accident: number;
 }

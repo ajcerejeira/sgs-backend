@@ -67,6 +67,10 @@ export class VehicleDetailDto {
   @ApiModelPropertyOptional()
   damages?: number[];
 
+  @IsNumber()
+  @ApiModelProperty()
+  accident: number;
+
   constructor(vehicle: Vehicle) {
     this.id = vehicle.id;
     this.register = vehicle.register;
@@ -79,5 +83,6 @@ export class VehicleDetailDto {
     this.insurance = vehicle.insurance;
     this.expiresIn = vehicle.expiresIn;
     this.damages = vehicle.damages;
+    this.accident = vehicle.accident.id;
   }
 }

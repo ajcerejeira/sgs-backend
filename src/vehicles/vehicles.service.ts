@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { Vehicle } from './vehicle.entity';
 import { VehicleDetailDto } from './dto/vehicle-detail.dto';
 import { VehicleCreateDto } from './dto/vehicle-create.dto';
+import { Accident } from '../accidents/accident.entity';
 
 @Injectable()
 export class VehiclesService {
   constructor(
     @InjectRepository(Vehicle)
     private readonly vehicleRepository: Repository<Vehicle>,
+    @InjectRepository(Accident)
+    private readonly accidentRepository: Repository<Accident>,
   ) {}
 
   async list(): Promise<VehicleDetailDto[]> {
@@ -18,7 +21,10 @@ export class VehiclesService {
   }
 
   async create(vehicle: VehicleCreateDto): Promise<VehicleDetailDto> {
-    const newVehicle = await this.vehicleRepository.save(vehicle);
+    const newVehicle = await this.vehicleRepository.save({
+      ...vehicle,
+      accident: await this.accidentRepository.findOne(vehicle.accident),
+    });
     return new VehicleDetailDto(newVehicle);
   }
 
@@ -42,6 +48,7 @@ export class VehiclesService {
       id,
       ...vehicle,
       ...newVehicle,
+      accident: await this.accidentRepository.findOne(newVehicle.accident)
     });
     return new VehicleDetailDto(updatedVehicle);
   }

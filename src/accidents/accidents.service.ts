@@ -13,7 +13,9 @@ export class AccidentsService {
   ) {}
 
   async list(): Promise<AccidentDetailDto[]> {
-    const accidents = await this.accidentRepository.find({ relations: ['vehicles'] });
+    const accidents = await this.accidentRepository.find({
+      relations: ['vehicles'],
+    });
     return accidents.map(accident => new AccidentDetailDto(accident));
   }
 
@@ -28,7 +30,9 @@ export class AccidentsService {
   }
 
   async detail(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id,  { relations: ['vehicles'] });
+    const accident = await this.accidentRepository.findOne(id, {
+      relations: ['vehicles'],
+    });
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }

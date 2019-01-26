@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsNumber, IsJSON, IsDateString } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
 import { Vehicle } from '../vehicles/vehicle.entity';
