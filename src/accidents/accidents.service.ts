@@ -18,7 +18,8 @@ export class AccidentsService {
     const accidents = await this.accidentRepository.find({
       relations: ['vehicles'],
     });
-    const res = accidents.map(async accident => {
+    const accidentDtos = [];
+    for (let accident of accidents) {
       const accidentDto = new AccidentDetailDto(accident);
       if (accident.location && accident.location.length >= 2) {
         const lat = accident.location[0];
@@ -28,10 +29,10 @@ export class AccidentsService {
           lon,
         );
         accidentDto.mapImg = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`;
+        accidentDtos.push(accidentDto);
       }
-      return accidentDto;
-    });
-    return await Promise.all(res);
+    }
+    return accidentDtos;
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
