@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { IsNumber, IsDate, IsJSON, IsOptional } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
-import { Vehicle } from 'src/vehicles/vehicle.entity';
+import { Vehicle } from '../vehicles/vehicle.entity';
 
 @Entity()
 export class Accident {

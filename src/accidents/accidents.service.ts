@@ -4,9 +4,9 @@ import { Repository, createQueryBuilder } from 'typeorm';
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { Accident } from './accident.entity';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
-import { Vehicle } from 'src/vehicles/vehicle.entity';
-import { VehicleCreateDto } from 'src/vehicles/dto/vehicle-create.dto';
-import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
+import { Vehicle } from '../vehicles/vehicle.entity';
+import { VehicleCreateDto } from '../vehicles/dto/vehicle-create.dto';
+import { VehicleDetailDto } from '../vehicles/dto/vehicle-detail.dto';
 
 @Injectable()
 export class AccidentsService {

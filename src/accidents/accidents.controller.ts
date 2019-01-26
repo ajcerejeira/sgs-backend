@@ -20,8 +20,8 @@ import {
 import { AccidentCreateDto } from './dto/accident-create.dto';
 import { AccidentsService } from './accidents.service';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
-import { VehicleDetailDto } from 'src/vehicles/dto/vehicle-detail.dto';
-import { VehicleCreateDto } from 'src/vehicles/dto/vehicle-create.dto';
+import { VehicleDetailDto } from '../vehicles/dto/vehicle-detail.dto';
+import { VehicleCreateDto } from '../vehicles/dto/vehicle-create.dto';
 
 @Controller('/api/accidents')
 @ApiUseTags('accidents')
