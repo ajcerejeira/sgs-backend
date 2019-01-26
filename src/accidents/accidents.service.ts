@@ -33,7 +33,7 @@ export class AccidentsService {
   }
 
   async detail(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id);
+    const accident = await this.accidentRepository.findOne(id,  { relations: ['vehicles'] });
     if (!accident) {
       throw new NotFoundException('The requested accident could not be found');
     }
@@ -63,48 +63,5 @@ export class AccidentsService {
     }
     await this.accidentRepository.delete(accident);
     return new AccidentDetailDto(accident);
-  }
-
-  //
-  // Vehicles
-  //
-  async vehicleList(accidentId: number): Promise<any> {
-    const accident = await this.accidentRepository.findOne(accidentId, { relations: ['vehicles'] });
-    if (!accident) {
-      throw new NotFoundException('The requested accident could not be found');
-    }
-    return accident.vehicles;
-  }
-
-  async vehicleCreate(
-    accidentId: number,
-    vehicle: VehicleCreateDto,
-  ): Promise<VehicleDetailDto> {
-    const accident = await this.accidentRepository.findOne(accidentId);
-    if (!accident) {
-      throw new NotFoundException('The requested accident could not be found');
-    }
-    const newVehicle = await this.vehicleRepository.save(vehicle);
-    if (accident.vehicles) {
-      accident.vehicles.push(newVehicle);
-    } else {
-      accident.vehicles = [newVehicle];
-    }
-    await this.accidentRepository.save(accident);
-    return newVehicle;
-  }
-
-  async vehicleDetail(accidentId: number, vehicleId: number): Promise<VehicleDetailDto> {
-    console.log('accidentId', accidentId);
-    console.log('vehicleId', vehicleId);
-    const accident = await this.accidentRepository.findOne(accidentId, { relations: ['vehicles'] });
-    if (!accident) {
-      throw new NotFoundException('The requested accident could not be found');
-    }
-    const vehicle = accident.vehicles ? accident.vehicles.find(v => (console.log(v.id, vehicleId), v.id == vehicleId)) : null;
-    if (!vehicle) {
-      throw new NotFoundException('The requested vehicle could not be found');
-    }
-    return vehicle;
   }
 }
