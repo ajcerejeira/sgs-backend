@@ -107,4 +107,12 @@ export class AccidentsController {
   ): Promise<VehicleDetailDto> {
     return this.accidentsService.vehicleCreate(accidentId, vehicle);
   }
+
+  @Delete(':accidentId/vehicles/:vehicleId')
+  @ApiNotFoundResponse({ description: 'Accident or vehicle not found' })
+  @ApiOperation({ title: 'Removes a vehicle from an accident' })
+  @ApiOkResponse({ description: 'Removed vehicle', type: VehicleDetailDto })
+  vehicleDelete(@Param('accidentId') accidentId: number, @Param('vehicleId') vehicleId: number) {
+
+  }
 }

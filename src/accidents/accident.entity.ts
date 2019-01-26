@@ -19,7 +19,7 @@ export class Accident {
   @IsDate()
   date?: Date;
 
-  @Column('int', { array: true, nullable: true })
+  @Column('float', { array: true, nullable: true })
   location?: Position;
 
   @Column('json', { nullable: true })
