@@ -4,7 +4,6 @@ import {
   IsString,
   IsEmail,
   IsDateString,
-  IsPhoneNumber,
 } from 'class-validator';
 
 @Entity()

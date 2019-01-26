@@ -29,7 +29,7 @@ export class ActorsService {
     return new ActorDetailDto(actor);
   }
 
-  async update(id: number, newActor: ActorCreateDto): Promise<ActorCreateDto> {
+  async update(id: number, newActor: ActorCreateDto): Promise<ActorDetailDto> {
     const actor = await this.actorRepository.findOne(id);
     if (!actor) {
       throw new NotFoundException('The requested actor could not be found');

@@ -8,11 +8,10 @@ import {
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { Accident } from '../accident.entity';
 import { VehicleDetailDto } from '../../vehicles/dto/vehicle-detail.dto';
-import { GeocoderService } from '../geocoder.service';
 
 export class AccidentDetailDto {
   @IsNumber()
-  @ApiModelPropertyOptional()
+  @ApiModelProperty()
   id: number;
 
   @IsDateString()
