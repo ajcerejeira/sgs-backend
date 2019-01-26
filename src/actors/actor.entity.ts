@@ -72,8 +72,8 @@ export class Actor {
   address?: string;
 
   @Column({ nullable: true })
-  @IsNumber()
-  doorNumber?: number;
+  @IsString()
+  doorNumber?: string;
 
   // Accident related
   @Column({ nullable: true })
