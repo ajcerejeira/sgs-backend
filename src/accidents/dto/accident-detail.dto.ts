@@ -54,7 +54,7 @@ export class AccidentDetailDto {
             this.location[0]
           },${
             this.location[1]
-          }&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`
+          }&zoom=19&size=600x300&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`
         : null;
     this.vehicles = accident.vehicles
       ? accident.vehicles.map(
