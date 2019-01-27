@@ -14,8 +14,8 @@ import {
   ApiNotFoundResponse,
   ApiCreatedResponse,
 } from '@nestjs/swagger';
-import { VehicleDetailDamageDto } from './dto/vehicle-damages-detail.dto';
-import { VehicleCreateDamageDto } from './dto/vehicle-damages-create.dto';
+import { VehicleDetailDto } from './dto/vehicle-detail.dto';
+import { VehicleCreateDto } from './dto/vehicle-create.dto';
 
 @Controller('api/accidents/:accidentId/vehicles')
 @ApiUseTags('accidents')
@@ -24,48 +24,48 @@ export class VehiclesController {
   @Get()
   @ApiOkResponse({
     description: 'List of vehicles of the accident',
-    type: VehicleDetailDamageDto,
+    type: VehicleDetailDto,
     isArray: true,
   })
-  async list(): Promise<VehicleDetailDamageDto[]> {
+  async list(): Promise<VehicleDetailDto[]> {
     return [];
   }
 
   @Post()
   @ApiCreatedResponse({
     description: 'Created damages',
-    type: VehicleDetailDamageDto,
+    type: VehicleDetailDto,
   })
   async create(
-    @Body(new ValidationPipe()) vehicle: VehicleCreateDamageDto,
-  ): Promise<VehicleDetailDamageDto> {
-    return { id: 2, damages: [] };
+    @Body(new ValidationPipe()) vehicle: VehicleCreateDto,
+  ): Promise<VehicleDetailDto> {
+    return { id: 2, ...vehicle };
   }
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Found vehicle', type: VehicleDetailDamageDto })
-  async detail(@Param('id') id: number): Promise<VehicleDetailDamageDto> {
-    return { id: 4, damages: [] };
+  @ApiOkResponse({ description: 'Found vehicle', type: VehicleDetailDto })
+  async detail(@Param('id') id: number): Promise<VehicleDetailDto> {
+    return { id: 4 };
   }
 
   @Put(':id')
   @ApiCreatedResponse({
     description: 'Updated vehicle',
-    type: VehicleDetailDamageDto,
+    type: VehicleDetailDto,
   })
   async update(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) vehicle: VehicleCreateDamageDto,
-  ): Promise<VehicleDetailDamageDto> {
+    @Body(new ValidationPipe()) vehicle: VehicleCreateDto,
+  ): Promise<VehicleDetailDto> {
     return { id, ...vehicle };
   }
 
   @Delete(':id')
   @ApiOkResponse({
     description: 'Deleted vehicle',
-    type: VehicleDetailDamageDto,
+    type: VehicleDetailDto,
   })
-  async delete(@Param('id') id: number): Promise<VehicleDetailDamageDto> {
-    return { id, damages: [] };
+  async delete(@Param('id') id: number): Promise<VehicleDetailDto> {
+    return { id };
   }
 }

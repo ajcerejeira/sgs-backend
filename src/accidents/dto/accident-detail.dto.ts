@@ -1,6 +1,6 @@
 import { ApiModelProperty } from '@nestjs/swagger';
 import { AccidentCreateDto } from './accident-create.dto';
-import { VehicleDetailDamageDto } from './vehicle-damages-detail.dto';
+import { VehicleDetailDto } from './vehicle-detail.dto';
 
 export class AccidentDetailDto extends AccidentCreateDto {
   @ApiModelProperty({ format: 'int' })
@@ -8,8 +8,8 @@ export class AccidentDetailDto extends AccidentCreateDto {
 
   @ApiModelProperty({
     default: [],
-    type: VehicleDetailDamageDto,
+    type: VehicleDetailDto,
     isArray: true,
   })
-  vehicles: VehicleDetailDamageDto[];
+  vehicles: VehicleDetailDto[];
 }

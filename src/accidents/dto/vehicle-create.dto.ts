@@ -1,10 +1,11 @@
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import {
   IsOptional,
   IsString,
   IsPositive,
   IsHexColor,
   IsDateString,
+  IsArray,
 } from 'class-validator';
 
 export class VehicleCreateDto {
@@ -57,4 +58,8 @@ export class VehicleCreateDto {
   @IsDateString()
   @IsOptional()
   expiresIn?: Date;
+
+  @ApiModelPropertyOptional({ format: 'int', type: 'number', isArray: true })
+  @IsArray()
+  damages?: number[];
 }
