@@ -90,13 +90,20 @@ export class AccidentsController {
   async accidentReport(@Param('id') id: number, @Res() res: Response) {
     const accident = await this.accidentsService.detail(id);
     res.render('report.hbs', { accident }, (err, html) =>
-      pdf.create(html, { format: 'A4', orientation: 'portrait', type: 'pdf' }).toBuffer((pdfErr, buffer) => {
-        if (err) {
-          throw new InternalServerErrorException('Failed to create the PDF');
-        }
-        res.contentType('application/pdf');
-        res.end(buffer);
-      }),
+      pdf
+        .create(html, {
+          format: 'A4',
+          orientation: 'portrait',
+          type: 'pdf',
+          zoomFactor: '1',
+        })
+        .toBuffer((pdfErr, buffer) => {
+          if (err) {
+            throw new InternalServerErrorException('Failed to create the PDF');
+          }
+          res.contentType('application/pdf');
+          res.end(buffer);
+        }),
     );
   }
 }
