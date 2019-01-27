@@ -38,7 +38,6 @@ export class ActorsService {
     const actor = await this.actorRepository.findOne(id, {
       relations: ['accident', 'vehicle'],
     });
-    console.log(actor);
     if (!actor) {
       throw new NotFoundException('The requested actor could not be found');
     }

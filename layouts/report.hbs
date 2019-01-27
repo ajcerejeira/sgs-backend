@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Auto de Acidente de Viação</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
-<body>
+<body class="p-5 m-5">
   <header>
-    <h1>Auto do Sinistro</h1>
+    <h1 class="display-4">Auto do Sinistro</h1>
   </header>
 
   <dl>
@@ -16,12 +17,86 @@
     <dd>{{ accident.date }}</dd>
   </dl>
 
-  <section>
-    <h2>Intervenientes</h2>
+  <section class="py-4">
+    <h2>Localização</h2>
+    <p class="lead">{{ accident.address }}</p>
+    <img src="{{ accident.mapImg }}" class="img-fluid">
   </section>
 
-  <section>
+  <section class="py-4">
+    <h2>Intervenientes</h2>
+    {{#each accident.actors }}
+      <h3>{{ this.name }}</h3>
+
+      <h4>Idenficação</h4>
+      <dl>
+        <dt>Tipo</dt>
+        <dd>{{ this.idType }}</dd>
+        <dt>Código</dt>
+        <dd>{{ this.idNumber }}</dd>
+        <dt>Válido até</dt>
+        <dd>{{ this.expires }}</dd>
+        <dt>Emissão</dt>
+        <dd>{{ this.emitedBy}}</dd>
+      </dl>
+
+      <h4>Dados pessoais</h4>
+      <dl>
+        <dt>Nome</dt>
+        <dd>{{ this.name }}</dd>
+        <dt>Data de nascimento</dt>
+        <dd>{{ this.birth }}</dd>
+        <dt>Endereço de correio electrónico</dt>
+        <dd>{{ this.email }}</dd>
+        <dt>Telemóvel / Telefone</dt>
+        <dd>{{ this.phone }}</dd>
+        <dt>Nacionalidade</dt>
+        <dd>{{ this.nationality }}</dd>
+        <dt>Naturalidade</dt>
+        <dd>{{ this.naturality }}</dd>
+        <dt>Filiação</dt>
+        <dd>
+          <ul>
+            {{#each this.parentage }}
+            <li>{{ this }}</li>
+            {{/each}}
+          </ul>
+        </dd>
+        <dt>Morada</dt>
+        <dd>{{ this.address}} {{ this.doorNumber }} , {{ this.locality }}. {{ this.zipCode }}</dd>
+      </dl>
+    {{/each}}
+  </section>
+
+  <section class="py-4">
     <h2>Veículos</h2>
+    {{#each accident.vehicles }}
+      <h3>Identificação</h3>
+      <dl>
+        <dt>Matrícula</dt>
+        <dd>{{ this.register }}</dd>
+      </dl>
+
+      <h3>Informações gerais</h3>
+      <dl>
+        <dt>Fabricante</dt>
+        <dd>{{ this.make }}</dd>
+        <dt>Modelo</dt>
+        <dd>{{ this.model }}</dd>
+        <dt>Ano</dt>
+        <dd>{{ this.yer }}</dd>
+      </dl>
+
+      <h3>Seguro</h3>
+      <dl>
+        <dt>Apólice</dt>
+        <dd>{{ this.policy }}</dd>
+        <dt>Seguradora</dt>
+        <dd>{{ this.insurance }}</dd>
+        <dt>Data de término</dt>
+        <dd>{{ this.expiresIn }}</dd>
+      </dl>
+    {{/each}}
   </section>
 </body>
 </html>
