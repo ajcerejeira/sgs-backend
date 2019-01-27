@@ -1,5 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { IsNumber, IsString, IsEmail, IsDateString } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsEmail,
+  IsDateString,
+} from 'class-validator';
 import { Accident } from '../accidents/accident.entity';
 import { Vehicle } from '../vehicles/vehicle.entity';
 
