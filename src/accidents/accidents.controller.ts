@@ -89,6 +89,7 @@ export class AccidentsController {
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async accidentReport(@Param('id') id: number, @Res() res: Response) {
     const accident = await this.accidentsService.detail(id);
+    // res.render('report.hbs', { accident });
     res.render('report.hbs', { accident }, (err, html) =>
       pdf
         .create(html, {
