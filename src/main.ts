@@ -22,6 +22,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/docs', app, document);
 
+  // Setup static folder
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+
   // Setup templates folder
   app.setBaseViewsDir(join(__dirname, '..', 'layouts'));
   app.setViewEngine('hbs');
