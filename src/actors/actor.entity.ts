@@ -5,7 +5,7 @@ import {
   IsEmail,
   IsDateString,
 } from 'class-validator';
-import { Accident } from 'src/accidents/accident.entity';
+import { Accident } from '../accidents/accident.entity';
 
 @Entity()
 export class Actor {

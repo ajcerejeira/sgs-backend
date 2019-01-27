@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActorDetailDto } from './dto/actor-detail.dto';
 import { ActorCreateDto } from './dto/actor-create.dto';
-import { Accident } from 'src/accidents/accident.entity';
+import { Accident } from '../accidents/accident.entity';
 
 @Injectable()
 export class ActorsService {

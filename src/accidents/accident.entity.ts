@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsNumber, IsJSON, IsDateString } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
 import { Vehicle } from '../vehicles/vehicle.entity';
-import { Actor } from 'src/actors/actor.entity';
+import { Actor } from '../actors/actor.entity';
 
 @Entity()
 export class Accident {
