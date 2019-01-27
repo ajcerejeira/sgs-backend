@@ -54,7 +54,7 @@ export class UsersController {
 
   @Get('me')
   @UseGuards(AuthGuard())
-  @ApiOperation({ title: 'Shows current logged user'})
+  @ApiOperation({ title: 'Shows current logged user' })
   @ApiOkResponse({ description: 'Current logged user', type: UserDetailDto })
   @ApiBearerAuth()
   me(@Req() req): Promise<UserDetailDto> {

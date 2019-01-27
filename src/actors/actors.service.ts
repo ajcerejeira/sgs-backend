@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ActorDetailDto } from './dto/actor-detail.dto';
 import { ActorCreateDto } from './dto/actor-create.dto';
 import { Accident } from '../accidents/accident.entity';
+import { Vehicle } from '../vehicles/vehicle.entity';
 
 @Injectable()
 export class ActorsService {
@@ -13,10 +14,14 @@ export class ActorsService {
     private readonly actorRepository: Repository<Actor>,
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
+    @InjectRepository(Vehicle)
+    private readonly vehicleRepository: Repository<Vehicle>,
   ) {}
 
   async list(): Promise<ActorDetailDto[]> {
-    const actors = await this.actorRepository.find();
+    const actors = await this.actorRepository.find({
+      relations: ['accident', 'vehicle'],
+    });
     return actors.map(actor => new ActorDetailDto(actor));
   }
 
@@ -24,12 +29,16 @@ export class ActorsService {
     const newActor = await this.actorRepository.save({
       ...actor,
       accident: await this.accidentRepository.findOne(actor.accident),
+      vehicle: await this.vehicleRepository.findOne(actor.vehicle),
     });
     return new ActorDetailDto(newActor);
   }
 
   async detail(id: number): Promise<ActorDetailDto> {
-    const actor = await this.actorRepository.findOne(id);
+    const actor = await this.actorRepository.findOne(id, {
+      relations: ['accident', 'vehicle'],
+    });
+    console.log(actor);
     if (!actor) {
       throw new NotFoundException('The requested actor could not be found');
     }
@@ -45,7 +54,8 @@ export class ActorsService {
       id,
       ...actor,
       ...newActor,
-      accident: await this.accidentRepository.findOne(newActor.accident)
+      accident: await this.accidentRepository.findOne(newActor.accident),
+      vehicle: await this.vehicleRepository.findOne(newActor.vehicle),
     });
     return new ActorDetailDto(updatedActor);
   }

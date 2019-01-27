@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { Vehicle, VehicleType } from '../vehicle.entity';
+import { ActorDetailDto } from '../../actors/dto/actor-detail.dto';
 
 export class VehicleDetailDto {
   // Identification
@@ -72,6 +73,10 @@ export class VehicleDetailDto {
   @ApiModelProperty()
   accident: number;
 
+  @IsArray()
+  @ApiModelProperty()
+  actors: ActorDetailDto[];
+
   constructor(vehicle: Vehicle) {
     this.id = vehicle.id;
     this.register = vehicle.register;
@@ -85,5 +90,10 @@ export class VehicleDetailDto {
     this.expiresIn = vehicle.expiresIn;
     this.damages = vehicle.damages;
     this.accident = vehicle.accident.id;
+    this.actors = vehicle.actors
+      ? vehicle.actors.map(
+          actor => new ActorDetailDto({ ...actor, vehicle: vehicle }),
+        )
+      : [];
   }
 }

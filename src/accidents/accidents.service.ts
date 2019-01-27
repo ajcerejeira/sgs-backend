@@ -29,7 +29,11 @@ export class AccidentsService {
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
     return new AccidentDetailDto(
-      await this.accidentRepository.save({ ...accident, vehicles: [], actors: [] }),
+      await this.accidentRepository.save({
+        ...accident,
+        vehicles: [],
+        actors: [],
+      }),
     );
   }
 

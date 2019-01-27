@@ -1,11 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import {
-  IsNumber,
-  IsString,
-  IsEmail,
-  IsDateString,
-} from 'class-validator';
+import { IsNumber, IsString, IsEmail, IsDateString } from 'class-validator';
 import { Accident } from '../accidents/accident.entity';
+import { Vehicle } from '../vehicles/vehicle.entity';
 
 @Entity()
 export class Actor {
@@ -80,6 +76,12 @@ export class Actor {
     onDelete: 'CASCADE',
   })
   accident: Accident;
+
+  @ManyToOne(type => Vehicle, vehicle => vehicle.actors, {
+    onDelete: 'CASCADE',
+    nullable: true,
+  })
+  vehicle?: Vehicle;
 
   @Column({ nullable: true })
   @IsString()

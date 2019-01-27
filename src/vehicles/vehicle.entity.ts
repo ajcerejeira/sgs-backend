@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import {
   IsString,
   IsNumber,
@@ -9,6 +15,7 @@ import {
   IsDateString,
 } from 'class-validator';
 import { Accident } from '../accidents/accident.entity';
+import { Actor } from '../actors/actor.entity';
 
 export enum VehicleType {
   Motorcicle = 'Motorcicle',
@@ -69,4 +76,9 @@ export class Vehicle {
     onDelete: 'CASCADE',
   })
   accident: Accident;
+
+  @OneToMany(type => Actor, actor => actor.vehicle, {
+    onDelete: 'CASCADE',
+  })
+  actors: Actor[];
 }

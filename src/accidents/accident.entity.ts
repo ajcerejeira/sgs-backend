@@ -31,4 +31,3 @@ export class Accident {
   })
   actors: Actor[];
 }
-

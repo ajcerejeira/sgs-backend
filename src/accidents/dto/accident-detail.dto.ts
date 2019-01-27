@@ -48,18 +48,32 @@ export class AccidentDetailDto {
     this.date = accident.date;
     this.location = accident.location;
     this.address = null;
-    this.mapImg = this.location && this.location.length >= 2 ?  `https://maps.googleapis.com/maps/api/staticmap?center=${this.location[0]},${this.location[1]}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : null;
-    this.vehicles = accident.vehicles ? accident.vehicles.map(
-      vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }),
-    ) : [];
-    this.actors = accident.actors ? accident.actors.map(
-      actor => new ActorDetailDto({ ...actor, accident: accident }),
-    ) : [];
+    this.mapImg =
+      this.location && this.location.length >= 2
+        ? `https://maps.googleapis.com/maps/api/staticmap?center=${
+            this.location[0]
+          },${
+            this.location[1]
+          }&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`
+        : null;
+    this.vehicles = accident.vehicles
+      ? accident.vehicles.map(
+          vehicle => new VehicleDetailDto({ ...vehicle, accident: accident }),
+        )
+      : [];
+    this.actors = accident.actors
+      ? accident.actors.map(
+          actor => new ActorDetailDto({ ...actor, accident: accident }),
+        )
+      : [];
   }
 
   async loadAddress(geocoder: GeocoderService) {
     if (this.location && this.location.length >= 2) {
-      this.address = await geocoder.getAddress(this.location[0], this.location[1]);
+      this.address = await geocoder.getAddress(
+        this.location[0],
+        this.location[1],
+      );
     }
   }
 }

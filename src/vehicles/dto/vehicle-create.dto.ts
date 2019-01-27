@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { VehicleType } from '../vehicle.entity';
+import { ActorDetailDto } from '../../actors/dto/actor-detail.dto';
 
 export class VehicleCreateDto {
   @IsString()

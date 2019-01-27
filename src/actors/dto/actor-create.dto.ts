@@ -62,7 +62,9 @@ export class ActorCreateDto {
 
   @IsArray()
   @IsOptional()
-  @ApiModelPropertyOptional({ example: ['John Father Doe', 'Johanna Mother Doe'] })
+  @ApiModelPropertyOptional({
+    example: ['John Father Doe', 'Johanna Mother Doe'],
+  })
   parentage?: string[];
 
   // Actor location
@@ -90,6 +92,10 @@ export class ActorCreateDto {
   @IsNumber()
   @ApiModelProperty()
   accident: number;
+
+  @IsNumber()
+  @ApiModelPropertyOptional()
+  vehicle?: number;
 
   @IsString()
   @IsOptional()
