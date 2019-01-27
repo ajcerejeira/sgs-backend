@@ -6,6 +6,7 @@ import {
   Body,
   Post,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -36,7 +37,7 @@ export class VehiclesController {
     type: VehicleDetailDamageDto,
   })
   async create(
-    @Body() vehicle: VehicleCreateDamageDto,
+    @Body(new ValidationPipe()) vehicle: VehicleCreateDamageDto,
   ): Promise<VehicleDetailDamageDto> {
     return { id: 2, damages: [] };
   }
@@ -54,7 +55,7 @@ export class VehiclesController {
   })
   async update(
     @Param('id') id: number,
-    @Body() vehicle: VehicleCreateDamageDto,
+    @Body(new ValidationPipe()) vehicle: VehicleCreateDamageDto,
   ): Promise<VehicleDetailDamageDto> {
     return { id, ...vehicle };
   }

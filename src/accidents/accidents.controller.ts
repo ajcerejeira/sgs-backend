@@ -7,7 +7,6 @@ import {
   Put,
   Delete,
   ValidationPipe,
-  UsePipes,
 } from '@nestjs/common';
 import {
   ApiUseTags,
