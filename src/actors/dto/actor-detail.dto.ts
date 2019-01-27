@@ -137,7 +137,7 @@ export class ActorDetailDto {
     this.zipcode = actor.zipcode;
     this.doorNumber = actor.doorNumber;
     this.accident = actor.accident.id;
-    this.vehicle = actor.vehicle.id;
+    this.vehicle = actor.vehicle ? actor.vehicle.id : null;
     this.role = actor.role;
     this.injury = actor.injury;
     this.alcoholTest = actor.alcoholTest;
