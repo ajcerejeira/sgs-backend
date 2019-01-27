@@ -1,10 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import {
   IsNumber,
   IsString,
   IsEmail,
   IsDateString,
 } from 'class-validator';
+import { Accident } from 'src/accidents/accident.entity';
 
 @Entity()
 export class Actor {
@@ -75,6 +76,11 @@ export class Actor {
   doorNumber?: string;
 
   // Accident related
+  @ManyToOne(type => Accident, accident => accident.actors, {
+    onDelete: 'CASCADE',
+  })
+  accident: Accident;
+
   @Column({ nullable: true })
   @IsString()
   role?: string;

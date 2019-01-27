@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsArray,
 } from 'class-validator';
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 
 export class ActorCreateDto {
   @IsString()
@@ -87,6 +87,10 @@ export class ActorCreateDto {
   doorNumber?: string;
 
   // Accident related
+  @IsNumber()
+  @ApiModelProperty()
+  accident: number;
+
   @IsString()
   @IsOptional()
   @ApiModelPropertyOptional({ example: 'Driver' })

@@ -94,6 +94,10 @@ export class ActorDetailDto {
   doorNumber?: string;
 
   // Accident related
+  @IsNumber()
+  @ApiModelProperty()
+  accident: number;
+
   @IsString()
   @IsOptional()
   @ApiModelPropertyOptional({ example: 'Driver' })
@@ -125,6 +129,7 @@ export class ActorDetailDto {
     this.address = actor.address;
     this.zipcode = actor.zipcode;
     this.doorNumber = actor.doorNumber;
+    this.accident = actor.accident.id;
     this.role = actor.role;
     this.injury = actor.injury;
     this.alcoholTest = actor.alcoholTest;

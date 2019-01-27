@@ -4,21 +4,28 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ActorDetailDto } from './dto/actor-detail.dto';
 import { ActorCreateDto } from './dto/actor-create.dto';
+import { Accident } from 'src/accidents/accident.entity';
 
 @Injectable()
 export class ActorsService {
   constructor(
     @InjectRepository(Actor)
     private readonly actorRepository: Repository<Actor>,
+    @InjectRepository(Accident)
+    private readonly accidentRepository: Repository<Accident>,
   ) {}
 
   async list(): Promise<ActorDetailDto[]> {
     const actors = await this.actorRepository.find();
-    return actors;
+    return actors.map(actor => new ActorDetailDto(actor));
   }
 
   async create(actor: ActorCreateDto): Promise<ActorDetailDto> {
-    return new ActorDetailDto(await this.actorRepository.save(actor));
+    const newActor = await this.actorRepository.save({
+      ...actor,
+      accident: await this.accidentRepository.findOne(actor.accident),
+    });
+    return new ActorDetailDto(newActor);
   }
 
   async detail(id: number): Promise<ActorDetailDto> {
@@ -38,6 +45,7 @@ export class ActorsService {
       id,
       ...actor,
       ...newActor,
+      accident: await this.accidentRepository.findOne(newActor.accident)
     });
     return new ActorDetailDto(updatedActor);
   }

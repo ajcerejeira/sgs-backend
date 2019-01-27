@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsNumber, IsJSON, IsDateString } from 'class-validator';
 import { GeoJSON, Position } from 'geojson';
 import { Vehicle } from '../vehicles/vehicle.entity';
+import { Actor } from 'src/actors/actor.entity';
 
 @Entity()
 export class Accident {
@@ -24,4 +25,10 @@ export class Accident {
     onDelete: 'CASCADE',
   })
   vehicles: Vehicle[];
+
+  @OneToMany(type => Actor, actor => actor.accident, {
+    onDelete: 'CASCADE',
+  })
+  actors: Actor[];
 }
+

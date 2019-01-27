@@ -22,6 +22,7 @@ import { ActorsModule } from './actors/actors.module';
     AuthModule,
     forwardRef(() => VehiclesModule),
     forwardRef(() => AccidentsModule),
+    forwardRef(() => ActorsModule),
     ActorsModule,
   ],
   controllers: [AppController],
