@@ -1,5 +1,12 @@
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsUrl, IsNumber, IsString, ValidateNested, IsArray } from 'class-validator';
+import {
+  IsOptional,
+  IsUrl,
+  IsNumber,
+  IsString,
+  ValidateNested,
+  IsArray,
+} from 'class-validator';
 
 export class LocationDto {
   @ApiModelPropertyOptional({

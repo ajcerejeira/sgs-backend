@@ -32,20 +32,23 @@ export class AccidentsController {
   }
 
   @Post()
-  @ApiCreatedResponse({ description: 'Created accident' })
+  @ApiCreatedResponse({
+    description: 'Created accident',
+    type: AccidentDetailDto,
+  })
   async create(
     @Body(new ValidationPipe()) accident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    return { id: 1, ...accident };
+    return { id: 1, ...accident, vehicles: [] };
   }
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Accident found', type: AccidentDetailDto })
+  @ApiOkResponse({ description: 'Found accident', type: AccidentDetailDto })
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async detail(
     @Param('id') id: number,
   ): Promise<AccidentDetailDto & { id: number }> {
-    return { id };
+    return { id, vehicles: [] };
   }
 
   @Put(':id')
@@ -58,13 +61,13 @@ export class AccidentsController {
     @Param('id') id: number,
     @Body(new ValidationPipe()) accident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    return { id, ...accident };
+    return { id, ...accident, vehicles: [] };
   }
 
   @Delete(':id')
   @ApiOkResponse({ description: 'Deleted accident', type: AccidentDetailDto })
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async delete(@Param('id') id: number): Promise<AccidentDetailDto> {
-    return { id };
+    return { id, vehicles: [] };
   }
 }
