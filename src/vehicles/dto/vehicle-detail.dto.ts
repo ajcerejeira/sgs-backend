@@ -66,7 +66,7 @@ export class VehicleDetailDto {
   // Accident related info
   @IsArray()
   @IsOptional()
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({ type: [Number] })
   damages?: number[];
 
   @IsNumber()
