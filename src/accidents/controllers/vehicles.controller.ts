@@ -26,7 +26,9 @@ export class VehiclesController {
     type: VehicleDetailDto,
     isArray: true,
   })
-  async list(): Promise<VehicleDetailDto[]> {
+  async list(
+    @Param('accidentId') accidentId: string,
+  ): Promise<VehicleDetailDto[]> {
     return [];
   }
 
@@ -36,6 +38,7 @@ export class VehiclesController {
     type: VehicleDetailDto,
   })
   async create(
+    @Param('accidentId') accidentId: string,
     @Body(new ValidationPipe()) vehicle: VehicleCreateDto,
   ): Promise<VehicleDetailDto> {
     return { id: 1, ...vehicle };
@@ -47,7 +50,10 @@ export class VehiclesController {
     type: VehicleDetailDto,
   })
   @ApiNotFoundResponse({ description: 'Vehicle not found' })
-  async detail(@Param('id') id: number): Promise<VehicleDetailDto> {
+  async detail(
+    @Param('accidentId') accidentId: string,
+    @Param('id') id: number,
+  ): Promise<VehicleDetailDto> {
     return { id };
   }
 
@@ -58,6 +64,7 @@ export class VehiclesController {
   })
   @ApiNotFoundResponse({ description: 'Vehicle not found' })
   async update(
+    @Param('accidentId') accidentId: string,
     @Param('id') id: number,
     @Body(new ValidationPipe()) vehicle: VehicleCreateDto,
   ): Promise<VehicleDetailDto> {
@@ -67,7 +74,10 @@ export class VehiclesController {
   @Delete(':id')
   @ApiOkResponse({ description: 'Deleted vehicle', type: VehicleDetailDto })
   @ApiNotFoundResponse({ description: 'Vehicle not found' })
-  async delete(@Param('id') id: number): Promise<VehicleDetailDto> {
+  async delete(
+    @Param('accidentId') accidentId: string,
+    @Param('id') id: number,
+  ): Promise<VehicleDetailDto> {
     return { id };
   }
 }

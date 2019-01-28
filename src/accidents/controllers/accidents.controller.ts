@@ -13,7 +13,6 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUseTags,
-  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { AccidentsService } from '../services/accidents.service';
 import { AccidentDetailDto } from '../dto/accident-detail.dto';

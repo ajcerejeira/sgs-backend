@@ -62,4 +62,9 @@ export class AccidentsService {
     await this.accidentRepository.remove(accident);
     return { ...accident, vehicles: [], actors: [] } as AccidentDetailDto;
   }
+
+  async exists(id: number): Promise<boolean> {
+    const accident = await this.accidentRepository.findOne(id);
+    return accident !== null;
+  }
 }
