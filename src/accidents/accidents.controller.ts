@@ -44,9 +44,7 @@ export class AccidentsController {
   @Get(':id')
   @ApiOkResponse({ description: 'Found accident', type: AccidentDetailDto })
   @ApiNotFoundResponse({ description: 'Accident not found' })
-  async detail(
-    @Param('id') id: number,
-  ): Promise<AccidentDetailDto> {
+  async detail(@Param('id') id: number): Promise<AccidentDetailDto> {
     return { id, vehicles: [], actors: [] };
   }
 

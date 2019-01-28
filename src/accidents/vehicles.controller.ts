@@ -42,11 +42,12 @@ export class VehiclesController {
   }
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Found vehicle in accident', type: VehicleDetailDto })
+  @ApiOkResponse({
+    description: 'Found vehicle in accident',
+    type: VehicleDetailDto,
+  })
   @ApiNotFoundResponse({ description: 'Vehicle not found' })
-  async detail(
-    @Param('id') id: number,
-  ): Promise<VehicleDetailDto> {
+  async detail(@Param('id') id: number): Promise<VehicleDetailDto> {
     return { id };
   }
 

@@ -1,7 +1,7 @@
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { PersonCreateDto } from './person-create.dto';
 import { IsOptional, IsEnum } from 'class-validator';
-import { VehicleCreateDto } from './vehicle-create.dto';
+import { VehicleCreateDto } from './ve\hicle-create.dto';
 import { VehicleDetailDto } from './vehicle-detail.dto';
 
 export enum Role {
@@ -29,7 +29,10 @@ export class ActorCreateDto extends PersonCreateDto {
   @IsOptional()
   vehicleId?: number;
 
-  @ApiModelPropertyOptional({ enum: Object.keys(Wounds), example: Wounds.Medium })
+  @ApiModelPropertyOptional({
+    enum: Object.keys(Wounds),
+    example: Wounds.Medium,
+  })
   @IsEnum(Wounds)
   @IsOptional()
   wounds?: Wounds;
