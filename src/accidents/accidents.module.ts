@@ -6,9 +6,11 @@ import { VehiclesController } from './controllers/vehicles.controller';
 import { Accident } from './entities/accident.entity';
 import { AccidentsService } from './services/accidents.service';
 import { AccidentExistsMiddleware } from './middlewares/accident-exists.middleware';
+import { VehicleMeta } from './entities/vehicle-meta.entity';
+import { Vehicle } from './entities/vehicle.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Accident])],
+  imports: [TypeOrmModule.forFeature([Accident, Vehicle, VehicleMeta])],
   controllers: [AccidentsController, ActorsController, VehiclesController],
   providers: [AccidentsService],
 })

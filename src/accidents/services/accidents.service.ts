@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Accident } from '../entities/accident.entity';
 import { Repository } from 'typeorm';
+import { Accident } from '../entities/accident.entity';
 import { AccidentCreateDto } from '../dto/accident-create.dto';
 import { AccidentDetailDto } from '../dto/accident-detail.dto';
 
@@ -14,7 +14,7 @@ export class AccidentsService {
 
   async list(): Promise<AccidentDetailDto[]> {
     const accidents = await this.accidentRepository.find();
-    return accidents.map(accident => ({ ...accident } as AccidentDetailDto));
+    return accidents.map(accident => ({ ...accident, vehicles: [] } as AccidentDetailDto));
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {

@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Vehicle } from './vehicle.entity';
 
 @Entity()
 export class Accident {
@@ -19,4 +20,7 @@ export class Accident {
 
   @Column('json', { nullable: true })
   sketch?: object;
+
+  @OneToMany(type => Vehicle, vehicle => vehicle.accident )
+  vehicles: Vehicle[];
 }
