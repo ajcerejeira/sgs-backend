@@ -1,65 +1,14 @@
-import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import {
-  IsOptional,
-  IsString,
-  IsPositive,
-  IsHexColor,
-  IsDateString,
-  IsArray,
-} from 'class-validator';
+import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { ActorDetailDto } from './actor-detail.dto';
+import { VehicleMetaCreateDto } from './vehicle-meta-create.dto';
 
-export class VehicleCreateDto {
-  @ApiModelPropertyOptional({ example: '25-33-XQ' })
-  @IsString()
-  @IsOptional()
-  register?: string;
-
-  // Brand
-  @ApiModelPropertyOptional({ example: 'Ford' })
-  @IsString()
-  @IsOptional()
-  make?: string;
-
-  @ApiModelPropertyOptional({ example: 'Focus' })
-  @IsString()
-  @IsOptional()
-  model?: string;
-
-  @ApiModelPropertyOptional({
-    format: 'int',
-    example: 2004,
-    maximum: new Date().getFullYear(),
-  })
-  @IsPositive()
-  @IsOptional()
-  year?: number;
-
-  @ApiModelPropertyOptional({ example: '#ffffff' })
-  @IsHexColor()
-  @IsOptional()
-  color?: string;
-
-  // Insurance
-  @ApiModelPropertyOptional({ example: '10894911' })
-  @IsString()
-  @IsOptional()
-  policy?: string;
-
-  @ApiModelPropertyOptional({ example: 'Allianz' })
-  @IsString()
-  @IsOptional()
-  insurance?: string;
-
-  @ApiModelPropertyOptional({
-    format: 'date',
-    type: 'string',
-    example: new Date(),
-  })
-  @IsDateString()
-  @IsOptional()
-  expiresIn?: Date;
-
-  @ApiModelPropertyOptional({ format: 'int', type: 'number', isArray: true })
-  @IsArray()
+export class VehicleCreateDto extends VehicleMetaCreateDto {
+  @ApiModelPropertyOptional({ type: 'number', isArray: true, example: [1, 3, 5] })
   damages?: number[];
+
+  @ApiModelPropertyOptional()
+  driver?: ActorDetailDto;
+
+  @ApiModelPropertyOptional({ type: ActorDetailDto, isArray: true })
+  passengers?: ActorDetailDto[];
 }

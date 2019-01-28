@@ -1,18 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Param,
   Body,
-  Put,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
+  Put,
   ValidationPipe,
 } from '@nestjs/common';
 import {
-  ApiUseTags,
-  ApiOkResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiUseTags,
 } from '@nestjs/swagger';
 import { AccidentDetailDto } from './dto/accident-detail.dto';
 import { AccidentCreateDto } from './dto/accident-create.dto';
@@ -38,7 +38,7 @@ export class AccidentsController {
   async create(
     @Body(new ValidationPipe()) accident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    return { id: 1, ...accident, vehicles: [] };
+    return { id: 1, ...accident, vehicles: [], actors: [] };
   }
 
   @Get(':id')
@@ -47,7 +47,7 @@ export class AccidentsController {
   async detail(
     @Param('id') id: number,
   ): Promise<AccidentDetailDto & { id: number }> {
-    return { id, vehicles: [] };
+    return { id, vehicles: [], actors: [] };
   }
 
   @Put(':id')
@@ -60,13 +60,13 @@ export class AccidentsController {
     @Param('id') id: number,
     @Body(new ValidationPipe()) accident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    return { id, ...accident, vehicles: [] };
+    return { id, ...accident, vehicles: [], actors: [] };
   }
 
   @Delete(':id')
   @ApiOkResponse({ description: 'Deleted accident', type: AccidentDetailDto })
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async delete(@Param('id') id: number): Promise<AccidentDetailDto> {
-    return { id, vehicles: [] };
+    return { id, vehicles: [], actors: [] };
   }
 }

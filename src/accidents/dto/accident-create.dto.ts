@@ -1,7 +1,5 @@
-import { LocationDto } from './location.dto';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsDateString, IsOptional, ValidateNested } from 'class-validator';
+import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class AccidentCreateDto {
   @ApiModelPropertyOptional({
@@ -9,13 +7,32 @@ export class AccidentCreateDto {
     format: 'date',
     example: new Date(),
   })
-  @IsOptional()
   @IsDateString()
+  @IsOptional()
   date?: Date;
 
-  @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional({
+    type: 'number',
+    isArray: true,
+    example: [51.532041, -0.124228],
+  })
   @IsOptional()
-  @ValidateNested()
-  @Type(() => LocationDto)
-  location?: LocationDto;
+  position?: number[];
+
+  @ApiModelPropertyOptional({
+    type: 'string',
+    example: 'Kings Cross, Londres, United Kingdom',
+  })
+  @IsString()
+  @IsOptional()
+  address?: string;
+
+  @ApiModelPropertyOptional({
+    type: 'string',
+    format: 'url',
+    example:
+      'https://maps.googleapis.com/maps/api/staticmap?center=51.532041,-0.1242288&zoom=19&size=400x200',
+  })
+  @IsUrl()
+  mapUrl?: string;
 }
