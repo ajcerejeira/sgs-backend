@@ -14,8 +14,8 @@ import {
   ApiOkResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
-import { ActorDetailDto } from './dto/actor-detail.dto';
-import { ActorCreateDto } from './dto/actor-create.dto';
+import { ActorDetailDto } from '../dto/actor-detail.dto';
+import { ActorCreateDto } from '../dto/actor-create.dto';
 
 @Controller('api/accidents/:accidentId/actors')
 @ApiUseTags('accidents')

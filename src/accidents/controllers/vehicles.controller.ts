@@ -14,8 +14,8 @@ import {
   ApiOkResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
-import { VehicleDetailDto } from './dto/vehicle-detail.dto';
-import { VehicleCreateDto } from './dto/vehicle-create.dto';
+import { VehicleDetailDto } from '../dto/vehicle-detail.dto';
+import { VehicleCreateDto } from '../dto/vehicle-create.dto';
 
 @Controller('api/accidents/:accidentId/vehicles')
 @ApiUseTags('accidents')
