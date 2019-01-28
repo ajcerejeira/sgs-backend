@@ -8,11 +8,12 @@ import { AccidentsService } from './services/accidents.service';
 import { AccidentExistsMiddleware } from './middlewares/accident-exists.middleware';
 import { VehicleMeta } from './entities/vehicle-meta.entity';
 import { Vehicle } from './entities/vehicle.entity';
+import { VehiclesService } from './services/vehicles.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Accident, Vehicle, VehicleMeta])],
   controllers: [AccidentsController, ActorsController, VehiclesController],
-  providers: [AccidentsService],
+  providers: [AccidentsService, VehiclesService],
 })
 export class AccidentsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

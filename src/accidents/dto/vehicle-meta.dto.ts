@@ -54,7 +54,7 @@ export class VehicleMetaDto {
   @ApiModelPropertyOptional({
     type: 'string',
     format: 'date',
-    default: new Date(),
+    example: new Date(),
   })
   @IsDateString()
   @IsOptional()

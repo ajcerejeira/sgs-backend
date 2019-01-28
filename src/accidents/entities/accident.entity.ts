@@ -21,6 +21,6 @@ export class Accident {
   @Column('json', { nullable: true })
   sketch?: object;
 
-  @OneToMany(type => Vehicle, vehicle => vehicle.accident )
+  @OneToMany(type => Vehicle, vehicle => vehicle.accident)
   vehicles: Vehicle[];
 }

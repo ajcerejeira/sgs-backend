@@ -14,7 +14,9 @@ export class AccidentsService {
 
   async list(): Promise<AccidentDetailDto[]> {
     const accidents = await this.accidentRepository.find();
-    return accidents.map(accident => ({ ...accident, vehicles: [] } as AccidentDetailDto));
+    return accidents.map(
+      accident => ({ ...accident, vehicles: [] } as AccidentDetailDto),
+    );
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
@@ -59,12 +61,7 @@ export class AccidentsService {
     if (!accident) {
       throw new NotFoundException();
     }
-    await this.accidentRepository.remove(accident);
+    await this.accidentRepository.delete(id);
     return { ...accident, vehicles: [], actors: [] } as AccidentDetailDto;
-  }
-
-  async exists(id: number): Promise<boolean> {
-    const accident = await this.accidentRepository.findOne(id);
-    return accident !== null;
   }
 }

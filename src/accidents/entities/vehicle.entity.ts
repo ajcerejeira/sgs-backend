@@ -7,12 +7,16 @@ export class Vehicle {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(type => Accident, accident => accident.vehicles)
+  @ManyToOne(type => Accident, accident => accident.vehicles, {
+    onDelete: 'CASCADE',
+  })
   accident: Accident;
 
   @Column('int', { array: true, nullable: true })
   damages?: number[];
 
-  @ManyToOne(type => VehicleMeta, meta => meta.vehicles)
+  @ManyToOne(type => VehicleMeta, meta => meta.vehicles, {
+    onDelete: 'CASCADE',
+  })
   meta: VehicleMeta;
 }

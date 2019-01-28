@@ -13,7 +13,7 @@ export class VehicleMeta {
   type?: string;
 
   // Brand
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   make?: string;
 
   @Column({ nullable: true })
