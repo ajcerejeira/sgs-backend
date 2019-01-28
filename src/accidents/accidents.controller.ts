@@ -46,7 +46,7 @@ export class AccidentsController {
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async detail(
     @Param('id') id: number,
-  ): Promise<AccidentDetailDto & { id: number }> {
+  ): Promise<AccidentDetailDto> {
     return { id, vehicles: [], actors: [] };
   }
 

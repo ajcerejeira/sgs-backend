@@ -1,4 +1,4 @@
-import { ApiModelProperty } from '@nestjs/swagger';
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { ActorCreateDto } from './actor-create.dto';
 
 export class ActorDetailDto extends ActorCreateDto {

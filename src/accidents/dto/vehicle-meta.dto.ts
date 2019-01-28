@@ -1,7 +1,7 @@
-import { IsString, IsOptional, IsPositive, IsHexColor, IsDateString } from 'class-validator';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
+import { IsString, IsOptional, IsPositive, IsHexColor, IsDateString } from 'class-validator';
 
-export class VehicleMetaCreateDto {
+export class VehicleMetaDto {
     // Identification
     @ApiModelPropertyOptional({ example: '25-33-XQ' })
     @IsString()
