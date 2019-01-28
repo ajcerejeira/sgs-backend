@@ -34,5 +34,6 @@ export class AccidentCreateDto {
       'https://maps.googleapis.com/maps/api/staticmap?center=51.532041,-0.1242288&zoom=19&size=400x200',
   })
   @IsUrl()
+  @IsOptional()
   mapUrl?: string;
 }

@@ -9,7 +9,13 @@ export class Accident {
   date?: Date;
 
   @Column('float', { array: true, nullable: true })
-  location?: number[];
+  position?: number[];
+
+  @Column({ nullable: true })
+  address?: string;
+
+  @Column({ nullable: true })
+  mapUrl?: string;
 
   @Column('json', { nullable: true })
   sketch?: object;
