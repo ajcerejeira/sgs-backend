@@ -17,7 +17,7 @@ export enum Wounds {
   None = 'None',
   Light = 'Light',
   Severe = 'Severe',
-  Death = 'Death',
+  Dead = 'Dead',
 }
 
 @Entity()
