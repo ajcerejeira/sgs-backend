@@ -22,7 +22,7 @@ export class VehiclesService {
       .createQueryBuilder('vehicle')
       .innerJoinAndSelect('vehicle.meta', 'meta')
       .where('vehicle.accident.id = :accidentId', { accidentId })
-      .getMany()).map(({ meta, ...vehicle }) => ({ ...vehicle, ...meta }));
+      .getMany()).map(({ meta, ...vehicle }) => ({ ...meta, ...vehicle }));
   }
 
   async create(
@@ -35,7 +35,7 @@ export class VehiclesService {
       meta: vehicleMeta,
       accident: accidentId,
     });
-    return { ...createdVehicle, ...meta } as VehicleDetailDto;
+    return { ...meta, ...createdVehicle } as VehicleDetailDto;
   }
 
   async detail(
@@ -46,12 +46,12 @@ export class VehiclesService {
       .createQueryBuilder('vehicle')
       .innerJoinAndSelect('vehicle.meta', 'meta')
       .where('vehicle.accident.id = :accidentId', { accidentId })
-      .where('vehicle.id = :vehicleId', { vehicleId })
+      .andWhere('vehicle.id = :vehicleId', { vehicleId })
       .getOne()) || { meta: null };
     if (!vehicle) {
       throw new NotFoundException();
     }
-    return { ...vehicle, ...meta };
+    return { ...meta, ...vehicle } as VehicleDetailDto;
   }
 
   async update(
@@ -63,7 +63,7 @@ export class VehiclesService {
       vehicleId,
       { relations: ['meta'] },
     );
-    if (!vehicle) {
+    if (!vehicle || !meta) {
       throw new NotFoundException();
     }
     const updatedMeta = await this.vehicleMetaRepository.save({
@@ -78,8 +78,8 @@ export class VehiclesService {
       ...newVehicle,
     });
     return {
-      ...updatedVehicle,
       ...updatedMeta,
+      ...updatedVehicle,
       vehicles: [],
       actors: [],
     } as AccidentDetailDto;

@@ -4,18 +4,33 @@ import { Repository } from 'typeorm';
 import { Accident } from '../entities/accident.entity';
 import { AccidentCreateDto } from '../dto/accident-create.dto';
 import { AccidentDetailDto } from '../dto/accident-detail.dto';
+import { VehiclesService } from './vehicles.service';
 
 @Injectable()
 export class AccidentsService {
   constructor(
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
+    private readonly vehiclesService: VehiclesService,
   ) {}
 
   async list(): Promise<AccidentDetailDto[]> {
-    const accidents = await this.accidentRepository.find();
-    return accidents.map(
-      accident => ({ ...accident, vehicles: [] } as AccidentDetailDto),
+    const accidents = await this.accidentRepository.find({
+      relations: ['vehicles'],
+    });
+    return Promise.all(
+      accidents.map(
+        async accident =>
+          ({
+            ...accident,
+            vehicles: await Promise.all(
+              accident.vehicles.map(
+                async vehicle =>
+                  await this.vehiclesService.detail(accident.id, vehicle.id),
+              ),
+            ),
+          } as AccidentDetailDto),
+      ),
     );
   }
 
@@ -29,18 +44,31 @@ export class AccidentsService {
   }
 
   async detail(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id);
+    const accident = await this.accidentRepository.findOne(id, {
+      relations: ['vehicles'],
+    });
     if (!accident) {
       throw new NotFoundException();
     }
-    return { ...accident, vehicles: [], actors: [] } as AccidentDetailDto;
+    const vehicles = await Promise.all(
+      accident.vehicles.map(
+        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
+      ),
+    );
+    return {
+      ...accident,
+      vehicles,
+      actors: [],
+    } as AccidentDetailDto;
   }
 
   async update(
     id: number,
     newAccident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id);
+    const accident = await this.accidentRepository.findOne(id, {
+      relations: ['vehicles'],
+    });
     if (!accident) {
       throw new NotFoundException();
     }
@@ -49,19 +77,31 @@ export class AccidentsService {
       ...accident,
       ...newAccident,
     });
+    const updatedVehicles = await Promise.all(
+      updatedAccident.vehicles.map(
+        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
+      ),
+    );
     return {
+      vehicles: updatedVehicles,
       ...updatedAccident,
-      vehicles: [],
       actors: [],
     } as AccidentDetailDto;
   }
 
   async delete(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id);
+    const accident = await this.accidentRepository.findOne(id, {
+      relations: ['vehicles'],
+    });
     if (!accident) {
       throw new NotFoundException();
     }
+    const vehicles = await Promise.all(
+      accident.vehicles.map(
+        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
+      ),
+    );
     await this.accidentRepository.delete(id);
-    return { ...accident, vehicles: [], actors: [] } as AccidentDetailDto;
+    return { ...accident, vehicles, actors: [] } as AccidentDetailDto;
   }
 }
