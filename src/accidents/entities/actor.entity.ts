@@ -53,8 +53,9 @@ export class Actor {
   @Column({ enum: Wounds, nullable: true })
   wounds?: Wounds;
 
+  @ApiModelPropertyOptional({ example: 1.2 })
   @IsNumber()
   @IsOptional()
-  @Column({ nullable: true })
+  @Column('float', { nullable: true })
   alcoholTest?: number;
 }
