@@ -2,12 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Accident } from '../entities/accident.entity';
+import { GoogleMapsService } from './google-maps.service';
 
 @Injectable()
 export class AccidentsService {
   constructor(
     @InjectRepository(Accident)
     private readonly accidentRepository: Repository<Accident>,
+    private readonly googleMapsService: GoogleMapsService,
   ) {}
 
   async list(): Promise<Accident[]> {
@@ -23,14 +25,17 @@ export class AccidentsService {
   async create(accident: Accident): Promise<Accident> {
     return await this.accidentRepository.save({
       ...accident,
+      address: await this.googleMapsService.getAddress(
+        accident.position[0],
+        accident.position[1],
+      ),
       mapUrl:
         accident.position && accident.position.length >= 2
-          ? `https://maps.googleapis.com/maps/api/staticmap?center=${
-              accident.position[0]
-            },${
-              accident.position[1]
-            }&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`
-          : '',
+          ? this.googleMapsService.getMapUrl(
+              accident.position[0],
+              accident.position[1],
+            )
+          : null,
       vehicles: [],
       actors: [],
     });

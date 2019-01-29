@@ -1,4 +1,9 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  HttpModule,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Accident } from './entities/accident.entity';
 import { AccidentExistsMiddleware } from './middlewares/accident-exists.middleware';
@@ -12,13 +17,20 @@ import { VehicleMeta } from './entities/vehicle-meta.entity';
 import { VehiclesController } from './controllers/vehicles.controller';
 import { VehiclesService } from './services/vehicles.service';
 import { ActorsService } from './services/actors.service';
+import { GoogleMapsService } from './services/google-maps.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Accident, Actor, Person, Vehicle, VehicleMeta]),
+    HttpModule,
   ],
   controllers: [AccidentsController, ActorsController, VehiclesController],
-  providers: [AccidentsService, ActorsService, VehiclesService],
+  providers: [
+    AccidentsService,
+    ActorsService,
+    GoogleMapsService,
+    VehiclesService,
+  ],
 })
 export class AccidentsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
