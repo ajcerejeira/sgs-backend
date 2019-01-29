@@ -15,6 +15,8 @@ export class AccidentsService {
       .createQueryBuilder('accident')
       .leftJoinAndSelect('accident.vehicles', 'vehicles')
       .leftJoinAndSelect('vehicles.meta', 'meta')
+      .leftJoinAndSelect('accident.actors', 'actors')
+      .leftJoinAndSelect('actors.person', 'person')
       .getMany();
   }
 
@@ -39,6 +41,8 @@ export class AccidentsService {
       .createQueryBuilder('accident')
       .leftJoinAndSelect('accident.vehicles', 'vehicles')
       .leftJoinAndSelect('vehicles.meta', 'meta')
+      .leftJoinAndSelect('accident.actors', 'actors')
+      .leftJoinAndSelect('actors.person', 'person')
       .where('accident.id = :id', { id })
       .getOne();
     if (!accident) {
