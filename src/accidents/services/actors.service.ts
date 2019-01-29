@@ -22,10 +22,7 @@ export class ActorsService {
   }
 
   async create(accidentId: number, actor: Actor): Promise<Actor> {
-    const person =
-      (await this.personRepository.findOne({
-        identityDocumentNumber: actor.person.identityDocumentNumber,
-      })) || (await this.personRepository.save(actor.person));
+    const person = await this.personRepository.save(actor.person);
     const createdActor = await this.actorRepository.save({
       accident: accidentId,
       ...actor,
