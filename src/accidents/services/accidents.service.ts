@@ -44,7 +44,7 @@ export class AccidentsService {
     await this.accidentRepository
       .createQueryBuilder('accident')
       .update()
-      .set({ ...accident, mapUrl: accident.position && accident.position.length >= 2 ? `https://maps.googleapis.com/maps/api/staticmap?center=${accident.position[0]},${accident.position[1]}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : '',
+      .set({ ...accident, mapUrl: accident.position && accident.position.length >= 2 ? `https://maps.googleapis.com/maps/api/staticmap?center=${accident.position[0]},${accident.position[1]}&zoom=19&size=600x600&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : '',
     })
       .where('accident.id = :id', { id })
       .execute();
