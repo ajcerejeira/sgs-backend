@@ -7,12 +7,15 @@ import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 
+
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) {
+
+  }
 
   async list(): Promise<UserDetailDto[]> {
     const users = await this.userRepository.find();
@@ -70,4 +73,7 @@ export class UsersService {
       ? new UserDetailDto(user)
       : null;
   }
-}
+  }
+
+
+

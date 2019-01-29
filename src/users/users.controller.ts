@@ -25,11 +25,15 @@ import { UserDetailDto } from './dto/user-detail.dto';
 import { UserCreateDto } from './dto/user-create.dto';
 import { UserUpdateDto } from './dto/user-update.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { MailService } from '../services/mail';
+
 
 @Controller('/api/users')
 @ApiUseTags('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService, private readonly mail: MailService) {
+ 
+  }
 
   @Get()
   @ApiOperation({ title: 'List all registered users' })
@@ -48,8 +52,10 @@ export class UsersController {
   @ApiBadRequestResponse({ description: 'Invalid body parameters' })
   create(
     @Body(new ValidationPipe()) user: UserCreateDto,
-  ): Promise<UserDetailDto> {
+  ): Promise<UserDetailDto> {  
+    this.mail.sendMail(user.email);
     return this.usersService.create(user);
+    
   }
 
   @Get('me')

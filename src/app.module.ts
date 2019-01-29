@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { AccidentsModule } from './accidents/accidents.module';
 import { ActorsModule } from './actors/actors.module';
+import { MailService } from './services/mail';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ActorsModule } from './actors/actors.module';
     forwardRef(() => AccidentsModule),
     forwardRef(() => ActorsModule),
     ActorsModule,
+    MailService,
   ],
   controllers: [AppController],
   providers: [AppService],
