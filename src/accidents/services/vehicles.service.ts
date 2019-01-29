@@ -83,7 +83,7 @@ export class VehiclesService {
           ? await this.actorsService.detail(accidentId, newVehicle.driver.id)
           : await this.actorsService.create(accidentId, newVehicle.driver),
       passengers: newVehicle.passengers
-        ? Promise.all(
+        ? await Promise.all(
             newVehicle.passengers.map(async passenger =>
               passenger.id
                 ? await this.actorsService.detail(accidentId, passenger.id)
