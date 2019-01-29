@@ -7,15 +7,21 @@ import {
   Post,
   Put,
   ValidationPipe,
+  Res,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUseTags,
+  ApiOperation,
+  ApiProduces,
 } from '@nestjs/swagger';
+import * as pdf from 'html-pdf';
 import { AccidentsService } from '../services/accidents.service';
 import { Accident } from '../entities/accident.entity';
+import { Response } from 'express';
 
 @Controller('api/accidents')
 @ApiUseTags('accidents')
@@ -68,5 +74,20 @@ export class AccidentsController {
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async delete(@Param('id') id: number): Promise<Accident> {
     return this.accidentsService.delete(id);
+  }
+
+  @Get(':id/report')
+  @ApiOperation({ title: 'Generates the PDF report of the accident' })
+  @ApiOkResponse({ description: 'Report of the accident' })
+  @ApiProduces('application-pdf')
+  @ApiNotFoundResponse({ description: 'Accident not found' })
+  async report(@Param('id') id: number, @Res() res: Response) {
+    const accident = await this.accidentsService.detail(id);
+    res.render('report.hbs', { accident }, async (err, html) => {
+      this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
+        res.contentType('application/pdf');
+        res.end(buffer);
+      });
+    });
   }
 }

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html style="zoom: 0.55;">
+
+<head>
+  <meta charset="utf-8">
+  <title>Auto de Acidente de Viação</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+    crossorigin="anonymous">
+</head>
+
+<body>
+  <header class="jumbotron jumbotron-fluid text-center">
+    <div class="container">
+      <h1 class="display-4">Auto de Acidente de Viação</h1>
+    </div>
+  </header>
+  <main class="container">
+    <section class="my-4">
+      <header class="py-4">
+        <h2 class="text-center">
+          <i class="fas fa-info-circle d-block"></i>
+          Informações gerais
+        </h2>
+      </header>
+    </section>
+    <section class="my-4">
+      <header class="py-4">
+        <h2 class="text-center">
+          <i class="far fa-map d-block"></i>
+          Localização
+        </h2>
+      </header>
+      <div class="card">
+        <div class="card-header">
+          <p class="card-text">{{ accident.address }}</p>
+        </div>
+        <img src="{{ accident.mapUrl }}" class="img-fluid w-100">
+      </div>
+    </section>
+
+    <section class="my-4">
+      <header class="py-4">
+        <h2 class="text-center">
+          <i class="fas fa-users d-block"></i>
+          Intervenientes
+        </h2>
+      </header>
+      <div class="">
+        {{#each accident.actors }}
+        <section class="card my-4">
+          <header class="card-header text-center">
+            <h3 class="card-title h5 strong">{{ this.person.name }}</h3>
+          </header>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-light">
+              <i class="far fa-id-card"></i>
+              Identificação
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Tipo de idenficação</strong>
+                <span class="col-9">{{ this.person.identityDocumentType }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Código</strong>
+                <span class="col-9">{{ this.person.identityDocumentNumber }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Validade</strong>
+                <span class="col-9">{{ this.person.identityDocumentExpirationDate }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Emitido por</strong>
+                <span class="col-9">{{ this.person.identityDocumentEmitedBy }}</span>
+              </div>
+            </li>
+            <li class="list-group-item bg-light">
+              <i class="far fa-user-circle"></i>
+              Dados pessoais
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Nome</strong>
+                <span class="col-9">{{ this.person.name }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Data de nascimento</strong>
+                <span class="col-9">{{ this.person.birth }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Email</strong>
+                <span class="col-9">{{ this.person.email }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Telemóvel / Telefone</strong>
+                <span class="col-9">{{ this.person.phone }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Nacionalidade</strong>
+                <span class="col-9">{{ this.person.nationality }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Naturalidade</strong>
+                <span class="col-9">{{ this.person.naturality }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Filiação</strong>
+                <span class="col-9">
+                  {{#each this.person.parentage }} {{ this }},{{/each}}
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Morada</strong>
+                <span class="col-9">{{ this.perosn.address}} {{ this.person.doorNumber }} , {{ this.person.locality }}. {{ this.person.zipCode }}</span>
+              </div>
+            </li>
+          </ul>
+        </section>
+        {{/each}}
+      </div>
+    </section>
+
+    <section class="my-4">
+      <header class="py-4">
+      <h2 class="text-center">
+        <i class="fas fa-car d-block"></i>
+        Veículos
+      </h2>
+      </header>
+      {{#each accident.vehicles }}
+      <section class="card my-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item bg-light">
+            <i class="far fa-id-card"></i>
+            Identificação
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Matricula</strong>
+              <span class="col-9">{{ this.meta.register }}</span>
+            </div>
+          </li>
+          <li class="list-group-item bg-light">
+            <i class="fas fa-info-circle"></i>
+            Informações gerais
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Fabricante</strong>
+              <span class="col-9">{{ this.meta.make }}</span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Model</strong>
+              <span class="col-9">{{ this.meta.model }}</span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Ano</strong>
+              <span class="col-9">{{ this.meta.year }}</span>
+            </div>
+          </li>
+          <li class="list-group-item bg-light">
+            <i class="fas fa-umbrella"></i>
+            Seguro
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Apólice</strong>
+              <span class="col-9">{{ this.meta.policy }}</span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Seguradora</strong>
+              <span class="col-9">{{ this.meta.insurance }}</span>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <strong class="col-3">Validade</strong>
+              <span class="col-9">{{ this.meta.expirationDate }}</span>
+            </div>
+          </li>
+          <li class="list-group-item bg-light">
+            <i class="fas fa-hammer"></i> Danos
+          </li>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-1">
+                <img src="/img/car-topview/top-left.png" alt="Topleft">
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+      {{/each}}
+    </section>
+  </main>
+</body>
+
+</html>

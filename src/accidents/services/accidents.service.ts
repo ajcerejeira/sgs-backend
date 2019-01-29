@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Accident } from '../entities/accident.entity';
 import { GoogleMapsService } from './google-maps.service';
+import * as pdf from 'html-pdf';
 
 @Injectable()
 export class AccidentsService {
@@ -62,10 +67,13 @@ export class AccidentsService {
       .update()
       .set({
         ...accident,
-        address: await this.googleMapsService.getAddress(
-          accident.position[0],
-          accident.position[1],
-        ),
+        address:
+          accident.position && accident.position.length >= 2
+            ? await this.googleMapsService.getAddress(
+                accident.position[0],
+                accident.position[1],
+              )
+            : null,
         mapUrl:
           accident.position && accident.position.length >= 2
             ? this.googleMapsService.getMapUrl(
@@ -83,5 +91,16 @@ export class AccidentsService {
     const accident = await this.detail(id);
     await this.accidentRepository.delete(id);
     return accident;
+  }
+
+  html2pdf(html: string, callback: (error: any, buffer: Buffer) => void): void {
+    return pdf
+      .create(html, {
+        format: 'A4',
+        orientation: 'portrait',
+        type: 'pdf',
+        zoomFactor: '1',
+      })
+      .toBuffer(callback);
   }
 }
