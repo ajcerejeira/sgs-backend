@@ -62,14 +62,17 @@ export class AccidentsService {
       .update()
       .set({
         ...accident,
+        address: await this.googleMapsService.getAddress(
+          accident.position[0],
+          accident.position[1],
+        ),
         mapUrl:
           accident.position && accident.position.length >= 2
-            ? `https://maps.googleapis.com/maps/api/staticmap?center=${
-                accident.position[0]
-              },${
-                accident.position[1]
-              }&zoom=19&size=1000x1000&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs`
-            : '',
+            ? this.googleMapsService.getMapUrl(
+                accident.position[0],
+                accident.position[1],
+              )
+            : null,
       })
       .where('accident.id = :id', { id })
       .execute();
