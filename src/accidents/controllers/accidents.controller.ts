@@ -15,8 +15,7 @@ import {
   ApiUseTags,
 } from '@nestjs/swagger';
 import { AccidentsService } from '../services/accidents.service';
-import { AccidentDetailDto } from '../dto/accident-detail.dto';
-import { AccidentCreateDto } from '../dto/accident-create.dto';
+import { Accident } from '../entities/accident.entity';
 
 @Controller('api/accidents')
 @ApiUseTags('accidents')
@@ -26,48 +25,48 @@ export class AccidentsController {
   @Get()
   @ApiOkResponse({
     description: 'List of accidents',
-    type: AccidentDetailDto,
+    type: Accident,
     isArray: true,
   })
-  async list(): Promise<AccidentDetailDto[]> {
+  async list(): Promise<Accident[]> {
     return this.accidentsService.list();
   }
 
   @Post()
   @ApiCreatedResponse({
     description: 'Created accident',
-    type: AccidentDetailDto,
+    type: Accident,
   })
   async create(
-    @Body(new ValidationPipe()) accident: AccidentCreateDto,
-  ): Promise<AccidentDetailDto> {
+    @Body(new ValidationPipe()) accident: Accident,
+  ): Promise<Accident> {
     return this.accidentsService.create(accident);
   }
 
   @Get(':id')
-  @ApiOkResponse({ description: 'Found accident', type: AccidentDetailDto })
+  @ApiOkResponse({ description: 'Found accident', type: Accident })
   @ApiNotFoundResponse({ description: 'Accident not found' })
-  async detail(@Param('id') id: number): Promise<AccidentDetailDto> {
+  async detail(@Param('id') id: number): Promise<Accident> {
     return this.accidentsService.detail(id);
   }
 
   @Put(':id')
   @ApiCreatedResponse({
     description: 'Updated accident',
-    type: AccidentDetailDto,
+    type: Accident,
   })
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async update(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) accident: AccidentCreateDto,
-  ): Promise<AccidentDetailDto> {
+    @Body(new ValidationPipe()) accident: Accident,
+  ): Promise<Accident> {
     return this.accidentsService.update(id, accident);
   }
 
   @Delete(':id')
-  @ApiOkResponse({ description: 'Deleted accident', type: AccidentDetailDto })
+  @ApiOkResponse({ description: 'Deleted accident', type: Accident })
   @ApiNotFoundResponse({ description: 'Accident not found' })
-  async delete(@Param('id') id: number): Promise<AccidentDetailDto> {
+  async delete(@Param('id') id: number): Promise<Accident> {
     return this.accidentsService.delete(id);
   }
 }

@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { VehicleMeta } from './vehicle-meta.entity';
 import { Accident } from './accident.entity';
 
@@ -12,9 +13,15 @@ export class Vehicle {
   })
   accident: Accident;
 
+  @ApiModelPropertyOptional({
+    type: 'number',
+    isArray: true,
+    example: [1, 3, 5],
+  })
   @Column('int', { array: true, nullable: true })
   damages?: number[];
 
+  @ApiModelProperty()
   @ManyToOne(type => VehicleMeta, meta => meta.vehicles, {
     onDelete: 'CASCADE',
   })

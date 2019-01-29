@@ -1,10 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vehicle } from '../entities/vehicle.entity';
 import { VehicleMeta } from '../entities/vehicle-meta.entity';
-import { VehicleDetailDto } from '../dto/vehicle-detail.dto';
-import { VehicleCreateDto } from '../dto/vehicle-create.dto';
+import { Vehicle } from '../entities/vehicle.entity';
 
 @Injectable()
 export class VehiclesService {
@@ -15,7 +13,7 @@ export class VehiclesService {
     private readonly vehicleMetaRepository: Repository<VehicleMeta>,
   ) {}
 
-  async list(accidentId: number): Promise<VehicleDetailDto[]> {
+  async list(accidentId: number): Promise<Vehicle[]> {
     return await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.meta', 'meta')
@@ -23,10 +21,7 @@ export class VehiclesService {
       .getMany();
   }
 
-  async create(
-    accidentId: number,
-    vehicle: VehicleCreateDto,
-  ): Promise<VehicleDetailDto> {
+  async create(accidentId: number, vehicle: Vehicle): Promise<Vehicle> {
     const meta =
       (await this.vehicleMetaRepository.findOne({
         register: vehicle.meta.register,
@@ -39,10 +34,7 @@ export class VehiclesService {
     return createdVehicle;
   }
 
-  async detail(
-    accidentId: number,
-    vehicleId: number,
-  ): Promise<VehicleDetailDto> {
+  async detail(accidentId: number, vehicleId: number): Promise<Vehicle> {
     const vehicle = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.meta', 'meta')
@@ -58,8 +50,8 @@ export class VehiclesService {
   async update(
     accidentId: number,
     vehicleId: number,
-    newVehicle: VehicleCreateDto,
-  ): Promise<VehicleDetailDto> {
+    newVehicle: Vehicle,
+  ): Promise<Vehicle> {
     const oldVehicle = await this.detail(accidentId, vehicleId);
     const oldMeta = await this.vehicleMetaRepository.findOne({
       register: oldVehicle.meta.register,
@@ -75,10 +67,7 @@ export class VehiclesService {
     });
   }
 
-  async delete(
-    accidentId: number,
-    vehicleId: number,
-  ): Promise<VehicleDetailDto> {
+  async delete(accidentId: number, vehicleId: number): Promise<Vehicle> {
     const vehicle = this.detail(accidentId, vehicleId);
     await this.vehicleRepository.delete(vehicleId);
     return vehicle;

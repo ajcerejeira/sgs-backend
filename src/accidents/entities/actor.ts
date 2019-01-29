@@ -1,8 +1,8 @@
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
-import { PersonCreateDto } from './person-create.dto';
-import { IsOptional, IsEnum } from 'class-validator';
-import { VehicleCreateDto } from './ve\hicle-create.dto';
-import { VehicleDetailDto } from './vehicle-detail.dto';
+import { IsEnum, IsOptional } from 'class-validator';
+import { Person } from './person.entity';
+import { Vehicle } from './vehicle.entity';
 
 export enum Role {
   Driver = 'Driver',
@@ -19,15 +19,25 @@ export enum Wounds {
   Death = 'Death',
 }
 
-export class ActorCreateDto extends PersonCreateDto {
+@Entity()
+export class Actor {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ApiModelPropertyOptional()
+  @ManyToOne(type => Person)
+  person: Person;
+
   @ApiModelPropertyOptional({ enum: Object.keys(Role), example: Role.Witness })
   @IsEnum(Role)
   @IsOptional()
+  @Column({ enum: Role, nullable: true })
   role?: Role;
 
   @ApiModelPropertyOptional()
   @IsOptional()
-  vehicleId?: number;
+  @ManyToOne(type => Vehicle, { nullable: true })
+  vehicle?: Vehicle;
 
   @ApiModelPropertyOptional({
     enum: Object.keys(Wounds),
@@ -35,5 +45,6 @@ export class ActorCreateDto extends PersonCreateDto {
   })
   @IsEnum(Wounds)
   @IsOptional()
+  @Column({ enum: Wounds, nullable: true })
   wounds?: Wounds;
 }
