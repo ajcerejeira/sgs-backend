@@ -61,13 +61,13 @@ export class Accident {
   @Column('json', { nullable: true })
   sketch?: object;
 
-  @ApiModelProperty()
+  @ApiModelProperty({ example: [] })
   @OneToMany(type => Vehicle, vehicle => vehicle.accident, {
     onDelete: 'CASCADE',
   })
   vehicles: Vehicle[];
 
-  @ApiModelProperty()
+  @ApiModelProperty({ example: [] })
   @OneToMany(type => Actor, actor => actor.accident, { onDelete: 'CASCADE' })
   actors: Actor[];
 }
