@@ -1,13 +1,16 @@
-import { ApiModelPropertyOptional } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import {
-  IsDateString,
-  IsOptional,
-  IsString,
-  IsUrl,
-  IsPositive,
-} from 'class-validator';
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  BeforeInsert,
+  BeforeUpdate,
+  AfterInsert,
+} from 'typeorm';
+import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Vehicle } from './vehicle.entity';
+import { Actor } from './actor.entity';
 
 @Entity()
 export class Accident {
@@ -54,12 +57,17 @@ export class Accident {
   mapUrl?: string;
 
   @ApiModelPropertyOptional()
-  @IsPositive()
+  @IsOptional()
   @Column('json', { nullable: true })
   sketch?: object;
 
+  @ApiModelProperty()
   @OneToMany(type => Vehicle, vehicle => vehicle.accident, {
     onDelete: 'CASCADE',
   })
   vehicles: Vehicle[];
+
+  @ApiModelProperty()
+  @OneToMany(type => Actor, actor => actor.accident, { onDelete: 'CASCADE' })
+  actors: Actor[];
 }

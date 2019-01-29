@@ -36,8 +36,9 @@ export class Vehicle {
   @Column('int', { array: true, nullable: true })
   damages?: number[];
 
+  /*
   @ApiModelPropertyOptional()
   @IsOptional()
   @ManyToOne(type => Actor, { nullable: true, onDelete: 'CASCADE' })
-  driver?: Actor;
+  driver?: Actor;*/
 }
