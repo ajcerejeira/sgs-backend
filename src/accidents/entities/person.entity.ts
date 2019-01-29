@@ -1,13 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import {
+  IsArray,
+  IsDateString,
+  IsEmail,
   IsEnum,
   IsOptional,
   IsString,
-  IsDateString,
-  IsEmail,
-  IsArray,
 } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 export enum IdentityDocumentType {
   IdentityDocument = 'IdentityDocument',

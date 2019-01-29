@@ -14,7 +14,7 @@ import {
   ApiOkResponse,
   ApiUseTags,
 } from '@nestjs/swagger';
-import { Actor } from '../entities/actor';
+import { Actor } from '../entities/actor.entity';
 
 @Controller('api/accidents/:accidentId/actors')
 @ApiUseTags('accidents')

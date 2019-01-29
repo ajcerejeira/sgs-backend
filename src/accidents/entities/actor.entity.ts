@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { IsEnum, IsOptional } from 'class-validator';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Person } from './person.entity';
 import { Vehicle } from './vehicle.entity';
 
@@ -36,7 +36,7 @@ export class Actor {
 
   @ApiModelPropertyOptional()
   @IsOptional()
-  @ManyToOne(type => Vehicle, { nullable: true })
+  @ManyToOne(type => Vehicle, { nullable: true, onDelete: 'CASCADE' })
   vehicle?: Vehicle;
 
   @ApiModelPropertyOptional({

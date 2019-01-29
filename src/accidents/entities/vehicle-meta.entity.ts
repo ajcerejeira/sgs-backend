@@ -1,11 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import {
-  IsString,
+  IsDateString,
+  IsHexColor,
   IsOptional,
   IsPositive,
-  IsHexColor,
-  IsDateString,
+  IsString,
 } from 'class-validator';
 import { Vehicle } from './vehicle.entity';
 

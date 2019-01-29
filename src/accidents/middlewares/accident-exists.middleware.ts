@@ -1,12 +1,12 @@
 import {
-  Injectable,
-  NestMiddleware,
-  MiddlewareFunction,
-  NotFoundException,
   Inject,
+  Injectable,
+  MiddlewareFunction,
+  NestMiddleware,
+  NotFoundException,
 } from '@nestjs/common';
-import { AccidentsService } from '../services/accidents.service';
 import { Request, Response } from 'express';
+import { AccidentsService } from '../services/accidents.service';
 
 @Injectable()
 export class AccidentExistsMiddleware implements NestMiddleware {
