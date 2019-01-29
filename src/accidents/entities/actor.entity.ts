@@ -10,12 +10,12 @@ export enum Role {
   Passenger = 'Passenger',
   Pedestrian = 'Pedestrian',
   Witness = 'Witness',
+  Other = 'Other',
 }
 
 export enum Wounds {
   None = 'None',
   Light = 'Light',
-  Medium = 'Medium',
   Severe = 'Severe',
   Death = 'Death',
 }
@@ -46,7 +46,7 @@ export class Actor {
 
   @ApiModelPropertyOptional({
     enum: Object.keys(Wounds),
-    example: Wounds.Medium,
+    example: Wounds.Light,
   })
   @IsEnum(Wounds)
   @IsOptional()
