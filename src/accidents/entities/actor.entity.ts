@@ -1,5 +1,5 @@
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional } from 'class-validator';
+import { IsEnum, IsOptional, IsNumber } from 'class-validator';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Person } from './person.entity';
 import { Vehicle } from './vehicle.entity';
@@ -52,4 +52,9 @@ export class Actor {
   @IsOptional()
   @Column({ enum: Wounds, nullable: true })
   wounds?: Wounds;
+
+  @IsNumber()
+  @IsOptional()
+  @Column({ nullable: true })
+  alcoholTest?: number;
 }
