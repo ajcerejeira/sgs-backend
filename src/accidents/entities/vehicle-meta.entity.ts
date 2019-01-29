@@ -6,7 +6,7 @@ export class VehicleMeta {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, unique: true })
   register?: string;
 
   @Column({ nullable: true })

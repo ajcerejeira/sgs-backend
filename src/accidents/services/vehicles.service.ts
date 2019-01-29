@@ -4,9 +4,7 @@ import { Repository } from 'typeorm';
 import { Vehicle } from '../entities/vehicle.entity';
 import { VehicleMeta } from '../entities/vehicle-meta.entity';
 import { VehicleDetailDto } from '../dto/vehicle-detail.dto';
-import { Accident } from '../entities/accident.entity';
 import { VehicleCreateDto } from '../dto/vehicle-create.dto';
-import { AccidentDetailDto } from '../dto/accident-detail.dto';
 
 @Injectable()
 export class VehiclesService {
@@ -18,40 +16,43 @@ export class VehiclesService {
   ) {}
 
   async list(accidentId: number): Promise<VehicleDetailDto[]> {
-    return (await this.vehicleRepository
+    return await this.vehicleRepository
       .createQueryBuilder('vehicle')
-      .innerJoinAndSelect('vehicle.meta', 'meta')
+      .leftJoinAndSelect('vehicle.meta', 'meta')
       .where('vehicle.accident.id = :accidentId', { accidentId })
-      .getMany()).map(({ meta, ...vehicle }) => ({ ...meta, ...vehicle }));
+      .getMany();
   }
 
   async create(
     accidentId: number,
     vehicle: VehicleCreateDto,
   ): Promise<VehicleDetailDto> {
-    const vehicleMeta = await this.vehicleMetaRepository.save({ ...vehicle });
-    const { meta, ...createdVehicle } = await this.vehicleRepository.save({
-      ...vehicle,
-      meta: vehicleMeta,
+    const meta =
+      (await this.vehicleMetaRepository.findOne({
+        register: vehicle.meta.register,
+      })) || (await this.vehicleMetaRepository.save(vehicle.meta));
+    const createdVehicle = await this.vehicleRepository.save({
       accident: accidentId,
+      ...vehicle,
+      meta,
     });
-    return { ...meta, ...createdVehicle } as VehicleDetailDto;
+    return createdVehicle;
   }
 
   async detail(
     accidentId: number,
     vehicleId: number,
   ): Promise<VehicleDetailDto> {
-    const { meta, ...vehicle } = (await this.vehicleRepository
+    const vehicle = await this.vehicleRepository
       .createQueryBuilder('vehicle')
-      .innerJoinAndSelect('vehicle.meta', 'meta')
+      .leftJoinAndSelect('vehicle.meta', 'meta')
       .where('vehicle.accident.id = :accidentId', { accidentId })
       .andWhere('vehicle.id = :vehicleId', { vehicleId })
-      .getOne()) || { meta: null };
+      .getOne();
     if (!vehicle) {
       throw new NotFoundException();
     }
-    return { ...meta, ...vehicle } as VehicleDetailDto;
+    return vehicle;
   }
 
   async update(
@@ -59,37 +60,26 @@ export class VehiclesService {
     vehicleId: number,
     newVehicle: VehicleCreateDto,
   ): Promise<VehicleDetailDto> {
-    const { meta, ...vehicle } = await this.vehicleRepository.findOne(
-      vehicleId,
-      { relations: ['meta'] },
-    );
-    if (!vehicle || !meta) {
-      throw new NotFoundException();
-    }
-    const updatedMeta = await this.vehicleMetaRepository.save({
-      id: meta.id,
-      ...meta,
-      ...newVehicle,
+    const oldVehicle = await this.detail(accidentId, vehicleId);
+    const oldMeta = await this.vehicleMetaRepository.findOne({
+      register: oldVehicle.meta.register,
     });
-    const updatedVehicle = await this.vehicleRepository.save({
-      id: vehicleId,
-      accident: accidentId,
-      ...vehicle,
-      ...newVehicle,
+    const newMeta = await this.vehicleMetaRepository.save({
+      ...oldMeta,
+      ...newVehicle.meta,
     });
-    return {
-      ...updatedMeta,
-      ...updatedVehicle,
-      vehicles: [],
-      actors: [],
-    } as AccidentDetailDto;
+    return await this.vehicleRepository.save({
+      ...oldVehicle,
+      ...newVehicle,
+      meta: newMeta,
+    });
   }
 
   async delete(
     accidentId: number,
     vehicleId: number,
   ): Promise<VehicleDetailDto> {
-    const vehicle = await this.detail(accidentId, vehicleId);
+    const vehicle = this.detail(accidentId, vehicleId);
     await this.vehicleRepository.delete(vehicleId);
     return vehicle;
   }

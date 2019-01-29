@@ -15,23 +15,12 @@ export class AccidentsService {
   ) {}
 
   async list(): Promise<AccidentDetailDto[]> {
-    const accidents = await this.accidentRepository.find({
-      relations: ['vehicles'],
-    });
-    return Promise.all(
-      accidents.map(
-        async accident =>
-          ({
-            ...accident,
-            vehicles: await Promise.all(
-              accident.vehicles.map(
-                async vehicle =>
-                  await this.vehiclesService.detail(accident.id, vehicle.id),
-              ),
-            ),
-          } as AccidentDetailDto),
-      ),
-    );
+    const accidents = await this.accidentRepository
+      .createQueryBuilder('accident')
+      .leftJoinAndSelect('accident.vehicles', 'vehicles')
+      .leftJoinAndSelect('vehicles.meta', 'meta')
+      .getMany();
+    return accidents.map(accident => ({ ...accident, actors: [] }));
   }
 
   async create(accident: AccidentCreateDto): Promise<AccidentDetailDto> {
@@ -44,64 +33,34 @@ export class AccidentsService {
   }
 
   async detail(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id, {
-      relations: ['vehicles'],
-    });
+    const accident = await this.accidentRepository
+      .createQueryBuilder('accident')
+      .leftJoinAndSelect('accident.vehicles', 'vehicles')
+      .leftJoinAndSelect('vehicles.meta', 'meta')
+      .where('accident.id = :id', { id })
+      .getOne();
     if (!accident) {
       throw new NotFoundException();
     }
-    const vehicles = await Promise.all(
-      accident.vehicles.map(
-        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
-      ),
-    );
-    return {
-      ...accident,
-      vehicles,
-      actors: [],
-    } as AccidentDetailDto;
+    return { ...accident, actors: [] };
   }
 
   async update(
     id: number,
-    newAccident: AccidentCreateDto,
+    accident: AccidentCreateDto,
   ): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id, {
-      relations: ['vehicles'],
-    });
-    if (!accident) {
-      throw new NotFoundException();
-    }
-    const updatedAccident = await this.accidentRepository.save({
-      id,
-      ...accident,
-      ...newAccident,
-    });
-    const updatedVehicles = await Promise.all(
-      updatedAccident.vehicles.map(
-        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
-      ),
-    );
-    return {
-      vehicles: updatedVehicles,
-      ...updatedAccident,
-      actors: [],
-    } as AccidentDetailDto;
+    await this.accidentRepository
+      .createQueryBuilder('accident')
+      .update()
+      .set({ ...accident })
+      .where('accident.id = :id', { id })
+      .execute();
+    return await this.detail(id);
   }
 
   async delete(id: number): Promise<AccidentDetailDto> {
-    const accident = await this.accidentRepository.findOne(id, {
-      relations: ['vehicles'],
-    });
-    if (!accident) {
-      throw new NotFoundException();
-    }
-    const vehicles = await Promise.all(
-      accident.vehicles.map(
-        async vehicle => await this.vehiclesService.detail(id, vehicle.id),
-      ),
-    );
+    const accident = await this.detail(id);
     await this.accidentRepository.delete(id);
-    return { ...accident, vehicles, actors: [] } as AccidentDetailDto;
+    return accident;
   }
 }
