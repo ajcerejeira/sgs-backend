@@ -21,6 +21,7 @@ export class AccidentsService {
   async create(accident: Accident): Promise<Accident> {
     return await this.accidentRepository.save({
       ...accident,
+      mapUrl: accident.position && accident.position.length >= 2 ? `https://maps.googleapis.com/maps/api/staticmap?center=${accident.position[0]},${accident.position[1]}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : '',
       vehicles: [],
       actors: [],
     });
@@ -43,7 +44,8 @@ export class AccidentsService {
     await this.accidentRepository
       .createQueryBuilder('accident')
       .update()
-      .set({ ...accident })
+      .set({ ...accident, mapUrl: accident.position && accident.position.length >= 2 ? `https://maps.googleapis.com/maps/api/staticmap?center=${accident.position[0]},${accident.position[1]}&zoom=19&size=400x200&key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs` : '',
+    })
       .where('accident.id = :id', { id })
       .execute();
     return await this.detail(id);
