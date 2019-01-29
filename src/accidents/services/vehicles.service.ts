@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VehicleMeta } from '../entities/vehicle-meta.entity';
 import { Vehicle } from '../entities/vehicle.entity';
+import { ActorsService } from './actors.service';
 
 @Injectable()
 export class VehiclesService {
@@ -11,6 +12,7 @@ export class VehiclesService {
     private readonly vehicleRepository: Repository<Vehicle>,
     @InjectRepository(VehicleMeta)
     private readonly vehicleMetaRepository: Repository<VehicleMeta>,
+    private readonly actorsService: ActorsService,
   ) {}
 
   async list(accidentId: number): Promise<Vehicle[]> {
@@ -29,6 +31,19 @@ export class VehiclesService {
     const createdVehicle = await this.vehicleRepository.save({
       accident: accidentId,
       ...vehicle,
+      driver:
+        vehicle.driver && vehicle.driver.id
+          ? await this.actorsService.detail(accidentId, vehicle.driver.id)
+          : null,
+      passengers: vehicle.passengers
+        ? await Promise.all(
+            vehicle.passengers.map(async passenger =>
+              passenger.id
+                ? await this.actorsService.detail(accidentId, passenger.id)
+                : null,
+            ),
+          )
+        : null,
       meta,
     });
     return createdVehicle;
@@ -63,6 +78,19 @@ export class VehiclesService {
     return await this.vehicleRepository.save({
       ...oldVehicle,
       ...newVehicle,
+      driver:
+        newVehicle.driver && newVehicle.driver.id
+          ? await this.actorsService.detail(accidentId, newVehicle.driver.id)
+          : await this.actorsService.create(accidentId, newVehicle.driver),
+      passengers: newVehicle.passengers
+        ? Promise.all(
+            newVehicle.passengers.map(async passenger =>
+              passenger.id
+                ? await this.actorsService.detail(accidentId, passenger.id)
+                : null,
+            ),
+          )
+        : null,
       meta: newMeta,
     });
   }

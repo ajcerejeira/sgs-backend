@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  OneToOne,
 } from 'typeorm';
 import { VehicleMeta } from './vehicle-meta.entity';
 import { Accident } from './accident.entity';
@@ -22,6 +23,7 @@ export class Vehicle {
   })
   meta: VehicleMeta;
 
+  @ApiModelProperty()
   @ManyToOne(type => Accident, accident => accident.vehicles, {
     onDelete: 'CASCADE',
   })
@@ -36,9 +38,19 @@ export class Vehicle {
   @Column('int', { array: true, nullable: true })
   damages?: number[];
 
-  /*
   @ApiModelPropertyOptional()
   @IsOptional()
-  @ManyToOne(type => Actor, { nullable: true, onDelete: 'CASCADE' })
-  driver?: Actor;*/
+  @OneToOne(type => Actor, actor => actor.vehicle, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  driver?: Actor;
+
+  @ApiModelPropertyOptional({ type: Actor, isArray: true })
+  @IsOptional()
+  @OneToMany(type => Actor, actor => actor.vehicle, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  passengers?: Actor[];
 }
