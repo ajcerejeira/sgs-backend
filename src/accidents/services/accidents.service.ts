@@ -60,6 +60,7 @@ export class AccidentsService {
   }
 
   async update(id: number, accident: Accident): Promise<Accident> {
+    const curAccident = await this.detail(id);
     await this.accidentRepository
       .createQueryBuilder('accident')
       .update()
@@ -73,10 +74,10 @@ export class AccidentsService {
               )
             : null,
         mapUrl:
-          accident.position && accident.position.length >= 2
+          (accident.position && accident.position.length >= 2) || (curAccident.position && curAccident.position.length >= 2)
             ? this.googleMapsService.getMapUrl(
-                accident.position[0],
-                accident.position[1],
+                accident.position ? accident.position[0] : curAccident.position[0],
+                accident.position ? accident.position[1] : curAccident.position[1],
                 accident.sketch as FeatureCollection,
               )
             : null,
