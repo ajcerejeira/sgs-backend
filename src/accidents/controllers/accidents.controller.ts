@@ -84,7 +84,6 @@ export class AccidentsController {
     const accident = await this.accidentsService.detail(id);
     const logo = 'https://i.imgur.com/cX2gyUg.png';
     const banner = 'https://i.imgur.com/jhsXIqF.jpg';
-    // res.render('report.hbs', { accident, banner, logo });
     res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
       this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
         res.contentType('application/pdf');

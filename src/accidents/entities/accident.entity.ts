@@ -1,10 +1,5 @@
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Vehicle } from './vehicle.entity';
 import { Actor } from './actor.entity';
