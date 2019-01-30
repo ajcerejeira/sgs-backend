@@ -18,7 +18,6 @@ import {
   ApiOperation,
   ApiProduces,
 } from '@nestjs/swagger';
-import * as pdf from 'html-pdf';
 import { AccidentsService } from '../services/accidents.service';
 import { Accident } from '../entities/accident.entity';
 import { Response } from 'express';
@@ -83,7 +82,9 @@ export class AccidentsController {
   @ApiNotFoundResponse({ description: 'Accident not found' })
   async report(@Param('id') id: number, @Res() res: Response) {
     const accident = await this.accidentsService.detail(id);
-    res.render('report.hbs', { accident }, async (err, html) => {
+    const logo = 'https://i.imgur.com/cX2gyUg.png';
+    const banner = 'https://i.imgur.com/DOQDuxI.jpg';
+    res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
       this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
         res.contentType('application/pdf');
         res.end(buffer);
