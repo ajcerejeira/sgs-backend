@@ -25,12 +25,13 @@ import {
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
+import { MailService } from './mail.service';
 
 @Controller('/api/users')
 @ApiUseTags('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService, private readonly mailService: MailService) {}
 
   @Get()
   @ApiOperation({ title: 'List all registered users' })
@@ -48,6 +49,7 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'Created user', type: User })
   @ApiBadRequestResponse({ description: 'Invalid body parameters' })
   create(@Body(new ValidationPipe()) user: User): Promise<User> {
+    this.mailService.sendMail(user.email);
     return this.usersService.create(user);
   }
 
