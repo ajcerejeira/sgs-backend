@@ -39,7 +39,7 @@ export class Actor {
   @Column({ enum: Role, nullable: true })
   role?: Role;
 
-  // @ApiModelPropertyOptional()
+  @ApiModelPropertyOptional()
   @IsOptional()
   @ManyToOne(type => Vehicle, { nullable: true, onDelete: 'CASCADE' })
   vehicle?: Vehicle;

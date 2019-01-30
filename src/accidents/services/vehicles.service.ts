@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  Inject,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VehicleMeta } from '../entities/vehicle-meta.entity';
@@ -12,6 +17,7 @@ export class VehiclesService {
     private readonly vehicleRepository: Repository<Vehicle>,
     @InjectRepository(VehicleMeta)
     private readonly vehicleMetaRepository: Repository<VehicleMeta>,
+    @Inject(forwardRef(() => ActorsService))
     private readonly actorsService: ActorsService,
   ) {}
 
@@ -19,6 +25,8 @@ export class VehiclesService {
     return await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.meta', 'meta')
+      .leftJoinAndSelect('vehicle.driver', 'driver')
+      .leftJoinAndSelect('driver.person', 'person')
       .where('vehicle.accident.id = :accidentId', { accidentId })
       .getMany();
   }
@@ -53,6 +61,8 @@ export class VehiclesService {
     const vehicle = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.meta', 'meta')
+      .leftJoinAndSelect('vehicle.driver', 'driver')
+      .leftJoinAndSelect('driver.person', 'person')
       .where('vehicle.accident.id = :accidentId', { accidentId })
       .andWhere('vehicle.id = :vehicleId', { vehicleId })
       .getOne();
@@ -81,7 +91,7 @@ export class VehiclesService {
       driver:
         newVehicle.driver && newVehicle.driver.id
           ? await this.actorsService.detail(accidentId, newVehicle.driver.id)
-          : await this.actorsService.create(accidentId, newVehicle.driver),
+          : null,
       passengers: newVehicle.passengers
         ? await Promise.all(
             newVehicle.passengers.map(async passenger =>
