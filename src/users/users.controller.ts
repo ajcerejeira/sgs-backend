@@ -31,7 +31,10 @@ import { MailService } from './mail.service';
 @ApiUseTags('users')
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
-  constructor(private readonly usersService: UsersService, private readonly mailService: MailService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly mailService: MailService,
+  ) {}
 
   @Get()
   @ApiOperation({ title: 'List all registered users' })
