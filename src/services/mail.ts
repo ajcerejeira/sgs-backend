@@ -12,7 +12,7 @@ export class MailService {
     constructor(
         ) { }
 
-async sendMail(email: string) {
+async sendConfirmationEmail(email: string) {
     // Generate SMTP service account from ethereal.email
     /*nodemailer.createTestAccount((err, account) => {
     if (err) {
@@ -48,6 +48,37 @@ async sendMail(email: string) {
         }
         else {
           console.log('Message sent: ' + info.response);
+        }
+    });
+    }
+
+
+async sendPasswordEmail(email: string) {
+
+    var mailOptions = {
+        from: 'noreply@sgs.com',
+        to: email,
+        subject: 'Alteração de password',
+        html: 'Efectuou recentemente um pedido para repor a sua palavra-passe em SGS. Para concluir o processo'+
+        'clique na ligação abaixo: \n'
+    };
+    console.log(mailOptions);
+
+    var options = {
+        service: 'SendGrid',
+        auth: {
+            api_key: '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'
+        }
+        }
+
+    var transporter = nodemailer.createTransport(sgTransport(options));
+
+    transporter.sendMail(mailOptions, function(err, info){
+        if (err ){
+            console.log(err);
+        }
+        else {
+            console.log('Message sent: ' + info.response);
         }
     });
     }

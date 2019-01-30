@@ -52,6 +52,25 @@ export class UsersService {
     return new UserDetailDto(updatedUser);
   }
 
+  async passwordRecovery(
+    email: string, 
+    newUser: UserUpdateDto
+  ): Promise<UserDetailDto | null> {
+    const user = await this.userRepository.findOne({ email });
+    console.log(user);
+    if (!user) {
+      throw new NotFoundException('The requested user could not be found');
+    }
+    const updatedUser = await this.userRepository.save({
+      email,
+      ...user,
+      ...newUser,
+      password: user.password ? await hash(user.password, 10) : user.password,
+    });
+    console.log(updatedUser);
+    return new UserDetailDto(updatedUser);
+  }
+
   async delete(id: number): Promise<UserDetailDto> {
     const user = await this.userRepository.findOne(id);
     if (!user) {

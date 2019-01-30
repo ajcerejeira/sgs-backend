@@ -53,7 +53,7 @@ export class UsersController {
   create(
     @Body(new ValidationPipe()) user: UserCreateDto,
   ): Promise<UserDetailDto> {  
-    this.mail.sendMail(user.email);
+    this.mail.sendConfirmationEmail(user.email);
     return this.usersService.create(user);
     
   }
@@ -85,6 +85,18 @@ export class UsersController {
     @Body(new ValidationPipe()) user: UserUpdateDto,
   ): Promise<UserDetailDto> {
     return this.usersService.update(id, user);
+  }
+
+  @Put(':email')
+  @ApiOperation({ title: 'Updates the password from a user' })
+  @ApiOkResponse({ description: 'Updated user', type: UserDetailDto })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  passwordRecovery(
+    @Param('email') email: string,
+    @Body(new ValidationPipe()) user: UserUpdateDto,
+  ): Promise<UserDetailDto> {
+    this.mail.sendPasswordEmail(user.email);
+    return this.usersService.passwordRecovery(email, user);
   }
 
   @Delete(':id')
