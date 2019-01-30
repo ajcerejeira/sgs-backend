@@ -11,6 +11,9 @@ import {
   Req,
   ClassSerializerInterceptor,
   UseInterceptors,
+  FileInterceptor,
+  UploadedFile,
+  Res,
 } from '@nestjs/common';
 import {
   ApiUseTags,
@@ -26,6 +29,7 @@ import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { MailService } from './mail.service';
+import { Response } from 'express';
 
 @Controller('/api/users')
 @ApiUseTags('users')
@@ -51,8 +55,13 @@ export class UsersController {
   @ApiOperation({ title: 'Registers a new user' })
   @ApiCreatedResponse({ description: 'Created user', type: User })
   @ApiBadRequestResponse({ description: 'Invalid body parameters' })
-  create(@Body(new ValidationPipe()) user: User): Promise<User> {
+  @UseInterceptors(FileInterceptor('avatar'))
+  create(@Body(new ValidationPipe()) user: User, @UploadedFile() avatar?): Promise<User> {
     this.mailService.sendMail(user.email);
+    if (avatar) {
+      user.avatar = avatar.buffer;
+      user.mimetype = avatar.mimetype;
+    }
     return this.usersService.create(user);
   }
 
@@ -71,6 +80,16 @@ export class UsersController {
   @ApiNotFoundResponse({ description: 'User not found' })
   detail(@Param('id') id: number): Promise<User> {
     return this.usersService.detail(id);
+  }
+
+  @Get(':id/avatar')
+  async avatar(@Param('id') id: number, @Res() res: Response) {
+    const user = await this.usersService.detail(id);
+    if (user.avatar) {
+      console.log(JSON.stringify(user.avatar));
+      res.setHeader('Content-Type', user.mimetype);
+      res.end(user.avatar, 'utf8');
+    }
   }
 
   @Put(':id')

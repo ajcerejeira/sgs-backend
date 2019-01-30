@@ -22,4 +22,17 @@ export class User {
   @Exclude({ toPlainOnly: true })
   @Column({ length: 200 })
   password: string;
+
+  @ApiModelProperty({ example: 'PSP' })
+  @IsOptional()
+  @Column({ nullable: true })
+  entity?: string;
+
+  @IsOptional()
+  @Column({ nullable: true })
+  mimetype?: string;
+
+  @IsOptional()
+  @Column('bytea', { nullable: true })
+  avatar?: Buffer;
 }
