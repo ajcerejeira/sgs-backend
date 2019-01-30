@@ -4,9 +4,6 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  BeforeInsert,
-  BeforeUpdate,
-  AfterInsert,
 } from 'typeorm';
 import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Vehicle } from './vehicle.entity';

@@ -1,4 +1,5 @@
 import { Injectable, HttpService } from '@nestjs/common';
+import { GeoJSON, FeatureCollection, Feature, Point } from 'geojson';
 
 @Injectable()
 export class GoogleMapsService {
@@ -9,13 +10,28 @@ export class GoogleMapsService {
   private readonly zoom = 19;
   private readonly width = 600;
   private readonly height = 600;
+  private readonly icons = {
+    crosswalk: 'https://i.imgur.com/0hRN1Bk.png',
+    forbidden: 'https://i.imgur.com/PZXoGqF.png',
+    oneWay: 'https://i.imgur.com/jfAiQbC.png',
+    stop: 'https://i.imgur.com/IaV9sET.png',
+    trafficLight: 'https://i.imgur.com/O6pmAEL.png',
+    yield: 'https://i.imgur.com/XWrYVnj.png',
+  };
 
   constructor(private readonly httpService: HttpService) {}
 
-  getMapUrl(lat: number, lon: number): string {
-    return `${this.staticApi}?center=${lat},${lon}&zoom=${this.zoom}&size=${
+  getMapUrl(centerLat: number, centerLon: number, featureCollection?: FeatureCollection): string {
+    const features = featureCollection ? featureCollection.features : [];
+    const markers = features.map(feature => {
+      const [ lat, lon ] = (feature.geometry as Point).coordinates;
+      const icon = this.icons[feature.properties.type];
+      return `&markers=anchor:topright%7Cicon:${icon}%7C${lat},${lon}`;
+    }).join('');
+
+    return `${this.staticApi}?center=${centerLat},${centerLon}&zoom=${this.zoom}&size=${
       this.width
-    }x${this.height}&key=${this.key}`;
+    }x${this.height}${markers}&key=${this.key}`;
   }
 
   async getAddress(lat: number, lon: number): Promise<string | null> {

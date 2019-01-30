@@ -1,13 +1,13 @@
 import {
   Injectable,
   NotFoundException,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as pdf from 'html-pdf';
 import { Accident } from '../entities/accident.entity';
 import { GoogleMapsService } from './google-maps.service';
-import * as pdf from 'html-pdf';
+import { FeatureCollection } from 'geojson';
 
 @Injectable()
 export class AccidentsService {
@@ -39,6 +39,7 @@ export class AccidentsService {
           ? this.googleMapsService.getMapUrl(
               accident.position[0],
               accident.position[1],
+              accident.sketch as FeatureCollection,
             )
           : null,
       vehicles: [],
@@ -79,6 +80,7 @@ export class AccidentsService {
             ? this.googleMapsService.getMapUrl(
                 accident.position[0],
                 accident.position[1],
+                accident.sketch as FeatureCollection,
               )
             : null,
       })
