@@ -1,6 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { GeoJSON, FeatureCollection, Feature, Point } from 'geojson';
 const carRotations = require('../../../data/carRotations.json');
+const crosswalkRotations = require('../../../data/crosswalkRotations');
 
 @Injectable()
 export class GoogleMapsService {
@@ -35,9 +36,17 @@ export class GoogleMapsService {
     const markers = features.map(
         feature => {
           const [lat, lon] = (feature.geometry as Point).coordinates;
-          const icon = feature.properties.type === 'car'
-            ? carRotations[feature.properties.rotation]
-            : this.icons[feature.properties.type];
+          let icon = '';
+          switch (feature.properties.type) {
+            case 'car':
+              icon = carRotations[feature.properties.rotation];
+              break;
+            case 'crosswalk':
+              icon = crosswalkRotations[feature.properties.rotation];
+              break;
+            default:
+              icon = this.icons[feature.properties.type];
+          }
           return `&markers=anchor:topright%7Cicon:${icon}%7C${lat},${lon}`;
         }).join('');
     return `${this.staticApi}?center=${centerLat},${centerLon}&zoom=${
