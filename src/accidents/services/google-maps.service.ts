@@ -8,14 +8,10 @@ export class GoogleMapsService {
   private readonly geocoderApi =
     'https://maps.googleapis.com/maps/api/geocode/json';
   private readonly staticApi = 'https://maps.googleapis.com/maps/api/staticmap';
-  private readonly googlUrl = 'https://www.googleapis.com/urlshortener/v1/url';
-  private readonly googlKey = 'AIzaSyDKc2OgSaAmZX59vVNlAtO2hjuFLpTLdiI';
   private readonly key = 'AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs';
   private readonly zoom = 19;
   private readonly width = 600;
   private readonly height = 600;
-  private readonly carUrl =
-    'https://raw.githubusercontent.com/ajcerejeira/sgs-backend/master/public/img/car-rotation/carroCroqui';
   private readonly icons = {
     crosswalk: 'https://i.imgur.com/0hRN1Bk.png',
     forbidden: 'https://i.imgur.com/PZXoGqF.png',
