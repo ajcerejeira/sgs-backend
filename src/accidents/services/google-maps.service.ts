@@ -19,6 +19,7 @@ export class GoogleMapsService {
     stop: 'https://i.imgur.com/IaV9sET.png',
     trafficLight: 'https://i.imgur.com/O6pmAEL.png',
     yield: 'https://i.imgur.com/XWrYVnj.png',
+    victim: 'https://i.imgur.com/tWjrmUR.png',
   };
 
   constructor(private readonly httpService: HttpService) {}
