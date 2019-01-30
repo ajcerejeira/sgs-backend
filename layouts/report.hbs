@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="zoom: 0.55;">
+<html style="zoom: 0.3;">
 
 <head>
   <meta charset="utf-8">
@@ -11,24 +11,15 @@
 </head>
 
 <body>
-  <header class="jumbotron jumbotron-fluid text-center text-light" style="background-image: url('{{ banner }}'); background-position: center">
-    <div class="container">
-      <h1 class="display-4">Auto de Acidente de Viação</h1>
-    </div>
+  <header>
+    <img src="{{ banner }}" class="img-fluid" style="object-fit: cover; width: 100%;">
   </header>
+
   <main class="container">
     <section class="my-4">
-      <header class="py-4">
-        <h2 class="text-center">
-          <i class="fas fa-info-circle d-block"></i>
-          Informações gerais
-        </h2>
-      </header>
-    </section>
-    <section class="my-4">
-      <header class="py-4">
-        <h2 class="text-center">
-          <i class="far fa-map d-block"></i>
+      <header class="p-4 my-2 text-light rounded" style="background-color: #0e3880">
+        <h2 class="font-weight-light">
+          <i class="far fa-map mr-2"></i>
           Localização
         </h2>
       </header>
@@ -41,9 +32,9 @@
     </section>
 
     <section class="my-4">
-      <header class="py-4">
-        <h2 class="text-center">
-          <i class="fas fa-users d-block"></i>
+      <header class="p-4 my-2 text-light rounded" style="background-color: #0e3880">
+        <h2 class="font-weight-light">
+          <i class="fas fa-users mr-2"></i>
           Intervenientes
         </h2>
       </header>
@@ -132,7 +123,8 @@
             <li class="list-group-item">
               <div class="row">
                 <strong class="col-3">Morada</strong>
-                <span class="col-9">{{ this.perosn.address}} {{ this.person.doorNumber }} , {{ this.person.locality }}. {{ this.person.zipCode }}</span>
+                <span class="col-9">{{ this.perosn.address}} {{ this.person.doorNumber }} , {{ this.person.locality }}.
+                  {{ this.person.zipCode }}</span>
               </div>
             </li>
           </ul>
@@ -142,11 +134,11 @@
     </section>
 
     <section class="my-4">
-      <header class="py-4">
-      <h2 class="text-center">
-        <i class="fas fa-car d-block"></i>
-        Veículos
-      </h2>
+      <header class="p-4 my-2 text-light rounded" style="background-color: #0e3880">
+        <h2 class="font-weight-light">
+          <i class="fas fa-car mr-2"></i>
+          Veículos
+        </h2>
       </header>
       {{#each accident.vehicles }}
       <section class="card my-4">
