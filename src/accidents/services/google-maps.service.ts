@@ -13,9 +13,16 @@ export class GoogleMapsService {
   private readonly width = 600;
   private readonly height = 600;
   private readonly icons = {
+    actor: 'https://i.imgur.com/Nso5hjw.png',
     crosswalk: 'https://i.imgur.com/0hRN1Bk.png',
     forbidden: 'https://i.imgur.com/PZXoGqF.png',
+    noLeftTurn: 'https://i.imgur.com/k9jposC.png',
+    noParking: 'https://i.imgur.com/H7aBBFg.png',
+    noRightTurn: 'https://i.imgur.com/qyn4be7.png',
     oneWay: 'https://i.imgur.com/jfAiQbC.png',
+    parkSign: 'https://i.imgur.com/3Fxg9pX.png',
+    railwayCrossing: 'https://i.imgur.com/cA2KuKA.png',
+    roundabout: 'https://i.imgur.com/YXUZTsb.png',
     stop: 'https://i.imgur.com/IaV9sET.png',
     trafficLight: 'https://i.imgur.com/O6pmAEL.png',
     yield: 'https://i.imgur.com/XWrYVnj.png',
