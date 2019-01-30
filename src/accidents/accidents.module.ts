@@ -1,20 +1,42 @@
-import { Module, forwardRef, HttpModule } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  HttpModule,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccidentsController } from './accidents.controller';
-import { AccidentsService } from './accidents.service';
-import { Accident } from './accident.entity';
-import { VehiclesModule } from '../vehicles/vehicles.module';
-import { GeocoderService } from './geocoder.service';
-import { ActorsModule } from '../actors/actors.module';
+import { Accident } from './entities/accident.entity';
+import { AccidentExistsMiddleware } from './middlewares/accident-exists.middleware';
+import { AccidentsController } from './controllers/accidents.controller';
+import { AccidentsService } from './services/accidents.service';
+import { Actor } from './entities/actor.entity';
+import { ActorsController } from './controllers/actors.controller';
+import { Person } from './entities/person.entity';
+import { Vehicle } from './entities/vehicle.entity';
+import { VehicleMeta } from './entities/vehicle-meta.entity';
+import { VehiclesController } from './controllers/vehicles.controller';
+import { VehiclesService } from './services/vehicles.service';
+import { ActorsService } from './services/actors.service';
+import { GoogleMapsService } from './services/google-maps.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Accident]),
-    forwardRef(() => VehiclesModule),
-    forwardRef(() => ActorsModule),
+    TypeOrmModule.forFeature([Accident, Actor, Person, Vehicle, VehicleMeta]),
     HttpModule,
   ],
-  controllers: [AccidentsController],
-  providers: [AccidentsService, GeocoderService],
+  controllers: [AccidentsController, ActorsController, VehiclesController],
+  providers: [
+    AccidentsService,
+    ActorsService,
+    GoogleMapsService,
+    VehiclesService,
+  ],
 })
-export class AccidentsModule {}
+export class AccidentsModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AccidentExistsMiddleware)
+      .with('id')
+      .forRoutes('api/accidents/:id/');
+  }
+}

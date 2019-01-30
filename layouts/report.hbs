@@ -36,7 +36,7 @@
         <div class="card-header">
           <p class="card-text">{{ accident.address }}</p>
         </div>
-        <img src="{{ accident.mapImg }}" class="img-fluid w-100">
+        <img src="{{ accident.mapUrl }}" class="img-fluid w-100">
       </div>
     </section>
 
@@ -47,96 +47,98 @@
           Intervenientes
         </h2>
       </header>
-      {{#each accident.actors }}
-      <section class="card">
-        <header class="card-header text-center">
-          <h3 class="card-title h5 strong">{{ this.name }}</h3>
-        </header>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-light">
-            <i class="far fa-id-card"></i>
-            Identificação
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Tipo de idenficação</strong>
-              <span class="col-9">{{ this.idType }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Código</strong>
-              <span class="col-9">{{ this.idNumber }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Validade</strong>
-              <span class="col-9">{{ this.expires }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Emitido por</strong>
-              <span class="col-9">{{ this.emitedBy }}</span>
-            </div>
-          </li>
-          <li class="list-group-item bg-light">
-            <i class="far fa-user-circle"></i>
-            Dados pessoais
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Nome</strong>
-              <span class="col-9">{{ this.name }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Data de nascimento</strong>
-              <span class="col-9">{{ this.birth }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Email</strong>
-              <span class="col-9">{{ this.email }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Telemóvel / Telefone</strong>
-              <span class="col-9">{{ this.phone }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Nacionalidade</strong>
-              <span class="col-9">{{ this.nationality }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Naturalidade</strong>
-              <span class="col-9">{{ this.naturality }}</span>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Filiação</strong>
-              <span class="col-9">
-                {{#each this.parentage }} {{ this }},{{/each}}
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="row">
-              <strong class="col-3">Morada</strong>
-              <span class="col-9">{{ this.address}} {{ this.doorNumber }} , {{ this.locality }}. {{ this.zipCode }}</span>
-            </div>
-          </li>
-        </ul>
+      <div class="">
+        {{#each accident.actors }}
+        <section class="card my-4">
+          <header class="card-header text-center">
+            <h3 class="card-title h5 strong">{{ this.person.name }}</h3>
+          </header>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-light">
+              <i class="far fa-id-card"></i>
+              Identificação
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Tipo de idenficação</strong>
+                <span class="col-9">{{ this.person.identityDocumentType }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Código</strong>
+                <span class="col-9">{{ this.person.identityDocumentNumber }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Validade</strong>
+                <span class="col-9">{{ this.person.identityDocumentExpirationDate }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Emitido por</strong>
+                <span class="col-9">{{ this.person.identityDocumentEmitedBy }}</span>
+              </div>
+            </li>
+            <li class="list-group-item bg-light">
+              <i class="far fa-user-circle"></i>
+              Dados pessoais
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Nome</strong>
+                <span class="col-9">{{ this.person.name }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Data de nascimento</strong>
+                <span class="col-9">{{ this.person.birth }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Email</strong>
+                <span class="col-9">{{ this.person.email }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Telemóvel / Telefone</strong>
+                <span class="col-9">{{ this.person.phone }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Nacionalidade</strong>
+                <span class="col-9">{{ this.person.nationality }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Naturalidade</strong>
+                <span class="col-9">{{ this.person.naturality }}</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Filiação</strong>
+                <span class="col-9">
+                  {{#each this.person.parentage }} {{ this }},{{/each}}
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <strong class="col-3">Morada</strong>
+                <span class="col-9">{{ this.perosn.address}} {{ this.person.doorNumber }} , {{ this.person.locality }}. {{ this.person.zipCode }}</span>
+              </div>
+            </li>
+          </ul>
+        </section>
         {{/each}}
-      </section>
+      </div>
     </section>
 
     <section class="my-4">
@@ -147,7 +149,7 @@
       </h2>
       </header>
       {{#each accident.vehicles }}
-      <section class="card">
+      <section class="card my-4">
         <ul class="list-group list-group-flush">
           <li class="list-group-item bg-light">
             <i class="far fa-id-card"></i>
@@ -156,7 +158,7 @@
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Matricula</strong>
-              <span class="col-9">{{ this.register }}</span>
+              <span class="col-9">{{ this.meta.register }}</span>
             </div>
           </li>
           <li class="list-group-item bg-light">
@@ -166,19 +168,19 @@
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Fabricante</strong>
-              <span class="col-9">{{ this.make }}</span>
+              <span class="col-9">{{ this.meta.make }}</span>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Model</strong>
-              <span class="col-9">{{ this.model }}</span>
+              <span class="col-9">{{ this.meta.model }}</span>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Ano</strong>
-              <span class="col-9">{{ this.year }}</span>
+              <span class="col-9">{{ this.meta.year }}</span>
             </div>
           </li>
           <li class="list-group-item bg-light">
@@ -188,19 +190,19 @@
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Apólice</strong>
-              <span class="col-9">{{ this.policy }}</span>
+              <span class="col-9">{{ this.meta.policy }}</span>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Seguradora</strong>
-              <span class="col-9">{{ this.insurancel }}</span>
+              <span class="col-9">{{ this.meta.insurance }}</span>
             </div>
           </li>
           <li class="list-group-item">
             <div class="row">
               <strong class="col-3">Validade</strong>
-              <span class="col-9">{{ this.expiresIn }}</span>
+              <span class="col-9">{{ this.meta.expirationDate }}</span>
             </div>
           </li>
           <li class="list-group-item bg-light">

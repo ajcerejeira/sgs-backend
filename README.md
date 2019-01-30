@@ -2,7 +2,6 @@
 
 Backend for the SGS (Sistema de Gestão de Sinistros) platform.
 
-
 ## Installation
 
 ```bash

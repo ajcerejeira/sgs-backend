@@ -7,13 +7,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
 
+  // Set up Swagger
   const options = new DocumentBuilder()
     .setTitle('SGS Backend API')
     .setDescription('API for the SGS (Sistema de Gestão de Sinistros) platform')
     .setVersion('1.0')
     .addTag('accidents', 'Accident management')
-    .addTag('vehicles', 'Vehicle management')
-    .addTag('actors', 'Actor management')
     .addTag('auth', 'Authentication with JWT')
     .addTag('users', 'User management')
     .setSchemes('https', 'http')
