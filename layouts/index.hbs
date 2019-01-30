@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Home</title>
+</head>
+<body>
+  <h1>Teste de upload de imagens</h1>
+  <form action="api/users" method="post" enctype="multipart/form-data">
+    <input type="text" name="name" id="name" placeholder="name">
+    <input type="email" name="email" id="email" placeholder="email">
+    <input type="password" name="password" id="password" placeholder="password">
+    <input type="file" name="avatar" id="avatar">
+    <input type="submit" value="Upload Image" name="submit">
+  </form>
+</body>
+</html>

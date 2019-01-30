@@ -96,10 +96,16 @@ export class UsersController {
   @ApiOperation({ title: 'Updates the fields from a user' })
   @ApiOkResponse({ description: 'Updated user', type: User })
   @ApiNotFoundResponse({ description: 'User not found' })
+  @UseInterceptors(FileInterceptor('avatar'))
   update(
     @Param('id') id: number,
     @Body(new ValidationPipe()) user: User,
+    @UploadedFile() avatar?
   ): Promise<User> {
+    if (avatar) {
+      user.avatar = avatar.buffer;
+      user.mimetype = avatar.mimetype;
+    }
     return this.usersService.update(id, user);
   }
 
