@@ -3,9 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { compare, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
-import { UserDetailDto } from './dto/user-detail.dto';
-import { UserCreateDto } from './dto/user-create.dto';
-import { UserUpdateDto } from './dto/user-update.dto';
 
 @Injectable()
 export class UsersService {
@@ -14,28 +11,27 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async list(): Promise<UserDetailDto[]> {
-    const users = await this.userRepository.find();
-    return users.map(user => new UserDetailDto(user));
+  async list(): Promise<User[]> {
+    return await this.userRepository.find();
   }
 
-  async create(user: UserCreateDto): Promise<UserDetailDto> {
+  async create(user: User): Promise<User> {
     const newUser = await this.userRepository.save({
       ...user,
       password: await hash(user.password, 10),
     });
-    return new UserDetailDto(newUser);
+    return newUser;
   }
 
-  async detail(id: number): Promise<UserDetailDto> {
+  async detail(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
-    return new UserDetailDto(user);
+    return user;
   }
 
-  async update(id: number, newUser: UserUpdateDto): Promise<UserDetailDto> {
+  async update(id: number, newUser: User): Promise<User> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
@@ -44,30 +40,27 @@ export class UsersService {
       id,
       ...user,
       ...newUser,
-      password: user.password ? await hash(user.password, 10) : user.password,
+      password: newUser.password
+        ? await hash(newUser.password, 10)
+        : user.password,
     });
-    return new UserDetailDto(updatedUser);
+    return updatedUser;
   }
 
-  async delete(id: number): Promise<UserDetailDto> {
+  async delete(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
     await this.userRepository.delete(id);
-    return new UserDetailDto(user);
+    return user;
   }
 
-  async validate(
-    email: string,
-    password: string,
-  ): Promise<UserDetailDto | null> {
+  async validate(email: string, password: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ email });
     if (!user) {
       throw new NotFoundException('The requested user could not be found');
     }
-    return (await compare(password, user.password))
-      ? new UserDetailDto(user)
-      : null;
+    return (await compare(password, user.password)) ? user : null;
   }
 }

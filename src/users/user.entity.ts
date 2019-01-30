@@ -1,22 +1,25 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
-import { IsEmail, IsString, IsNumber } from 'class-validator';
+import { IsEmail, IsString, IsNumber, IsOptional } from 'class-validator';
+import { Exclude } from 'class-transformer';
+import { ApiModelProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
+  @ApiModelProperty()
   @PrimaryGeneratedColumn()
-  @IsNumber()
   id: number;
 
+  @ApiModelProperty({ example: 'John Doe' })
   @Column({ length: 200 })
-  @IsString()
   name: string;
 
+  @ApiModelProperty({ example: 'john@doe.com' })
   @Column({ length: 200 })
   @Index({ unique: true })
-  @IsEmail()
   email: string;
 
+  @ApiModelProperty({ example: 'ilovekittens' })
+  @Exclude({ toPlainOnly: true })
   @Column({ length: 200 })
-  @IsString()
   password: string;
 }

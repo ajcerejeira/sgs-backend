@@ -1,4 +1,4 @@
-import { ApiModelProperty, ApiUseTags } from '@nestjs/swagger';
+import { ApiModelProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
 
 export class JwtPayload {
