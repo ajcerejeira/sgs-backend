@@ -37,22 +37,25 @@ export class GoogleMapsService {
     featureCollection?: FeatureCollection,
   ): string {
     const features = featureCollection ? featureCollection.features : [];
-    const markers = features ? features.map(
-        feature => {
-          const [lat, lon] = (feature.geometry as Point).coordinates;
-          let icon = '';
-          switch (feature.properties.type) {
-            case 'car':
-              icon = carRotations[feature.properties.rotation];
-              break;
-            case 'crosswalk':
-              icon = crosswalkRotations[feature.properties.rotation];
-              break;
-            default:
-              icon = this.icons[feature.properties.type];
-          }
-          return `&markers=anchor:topright%7Cicon:${icon}%7C${lat},${lon}`;
-        }).join('') : '';
+    const markers = features
+      ? features
+          .map(feature => {
+            const [lat, lon] = (feature.geometry as Point).coordinates;
+            let icon = '';
+            switch (feature.properties.type) {
+              case 'car':
+                icon = carRotations[feature.properties.rotation];
+                break;
+              case 'crosswalk':
+                icon = crosswalkRotations[feature.properties.rotation];
+                break;
+              default:
+                icon = this.icons[feature.properties.type];
+            }
+            return `&markers=anchor:topright%7Cicon:${icon}%7C${lat},${lon}`;
+          })
+          .join('')
+      : '';
     return `${this.staticApi}?center=${centerLat},${centerLon}&zoom=${
       this.zoom
     }&size=${this.width}x${this.height}${markers}&key=${this.key}`;

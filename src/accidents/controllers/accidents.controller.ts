@@ -96,7 +96,17 @@ export class AccidentsController {
       botright: 'https://i.imgur.com/Z3AM4Tt.png',
     };
     for (const vehicle of accident.vehicles) {
-      (vehicle as any).damageOpacities = { topleft: 0, topcenter: 0, topright: 0, midleft: 0, midcenter: 0, midright: 0, botleft: 0, botcenter: 0, botright: 0 };
+      (vehicle as any).damageOpacities = {
+        topleft: 0,
+        topcenter: 0,
+        topright: 0,
+        midleft: 0,
+        midcenter: 0,
+        midright: 0,
+        botleft: 0,
+        botcenter: 0,
+        botright: 0,
+      };
       for (const damage of vehicle.damages) {
         const opacity = Object.keys(damagesUrl)[damage];
         (vehicle as any).damageOpacities[opacity] = 0.4;

@@ -11,6 +11,7 @@ import { VehicleMeta } from './vehicle-meta.entity';
 import { Accident } from './accident.entity';
 import { Actor } from './actor.entity';
 import { IsOptional } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Vehicle {
@@ -37,6 +38,11 @@ export class Vehicle {
   @IsOptional()
   @Column('int', { array: true, nullable: true })
   damages?: number[];
+
+  @IsOptional()
+  @Exclude()
+  @Column('bytea', { array: true, nullable: true })
+  pictures?: Buffer[];
 
   @ApiModelPropertyOptional()
   @IsOptional()

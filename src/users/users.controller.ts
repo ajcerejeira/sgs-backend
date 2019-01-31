@@ -56,7 +56,10 @@ export class UsersController {
   @ApiCreatedResponse({ description: 'Created user', type: User })
   @ApiBadRequestResponse({ description: 'Invalid body parameters' })
   @UseInterceptors(FileInterceptor('avatar'))
-  create(@Body(new ValidationPipe()) user: User, @UploadedFile() avatar?): Promise<User> {
+  create(
+    @Body(new ValidationPipe()) user: User,
+    @UploadedFile() avatar?,
+  ): Promise<User> {
     this.mailService.sendMail(user.email);
     if (avatar) {
       user.avatar = avatar.buffer;
@@ -102,7 +105,7 @@ export class UsersController {
   update(
     @Param('id') id: number,
     @Body(new ValidationPipe()) user: User,
-    @UploadedFile() avatar?
+    @UploadedFile() avatar?,
   ): Promise<User> {
     if (avatar) {
       user.avatar = avatar.buffer;
