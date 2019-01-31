@@ -17,7 +17,10 @@ async sendConfirmationEmail(email: string) {
         from: 'noreply@sgs.com',
         to: email,
         subject: 'Confirmação de registo',
-        html: 'Bem vindo ao SGS, a sua aplicação está pronta a usar'
+        text: 'Bem vindo ao Sistema de Gestão de Sinistros!\n\n' +
+        'A sua aplicação está pronta a ser usada.\n\n' +
+        'Clique no link seguinte para aceder ao SGS:\n\n' +
+        'https://ajcerejeira.github.io/sgs-frontend/#/login\n\n'
     };
     console.log(mailOptions);
 
@@ -41,7 +44,7 @@ async sendConfirmationEmail(email: string) {
     }
 
 
-async sendPasswordEmail(email: string) {
+/*async sendPasswordEmail(email: string) {
 
     var mailOptions = {
         from: 'noreply@sgs.com',
@@ -69,6 +72,6 @@ async sendPasswordEmail(email: string) {
             console.log('Message sent: ' + info.response);
         }
     });
-    }
+}*/
 }
 
