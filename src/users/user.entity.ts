@@ -29,6 +29,7 @@ export class User {
   entity?: string;
 
   @IsOptional()
+  @Exclude()
   @Column({ nullable: true })
   mimetype?: string;
 
