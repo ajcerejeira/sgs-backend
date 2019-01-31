@@ -33,6 +33,7 @@ export class User {
   mimetype?: string;
 
   @IsOptional()
+  @Exclude()
   @Column('bytea', { nullable: true })
   avatar?: Buffer;
 }
