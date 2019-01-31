@@ -89,6 +89,8 @@ export class UsersController {
       console.log(JSON.stringify(user.avatar));
       res.setHeader('Content-Type', user.mimetype);
       res.end(user.avatar, 'utf8');
+    } else {
+      res.redirect('https://i.imgur.com/BnqIsff.png');
     }
   }
 
