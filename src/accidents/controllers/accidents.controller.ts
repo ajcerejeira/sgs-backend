@@ -83,13 +83,33 @@ export class AccidentsController {
   async report(@Param('id') id: number, @Res() res: Response) {
     const accident = await this.accidentsService.detail(id);
     const logo = 'https://i.imgur.com/cX2gyUg.png';
-
     const banner = 'https://i.imgur.com/jhsXIqF.jpg';
-    res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
+    const damagesUrl = {
+      topleft: 'https://i.imgur.com/ANn3CwX.png',
+      topcenter: 'https://i.imgur.com/1pAj9yo.png',
+      topright: 'https://i.imgur.com/AHcUdRG.png',
+      midleft: 'https://i.imgur.com/QbIloR1.png',
+      midcenter: 'https://i.imgur.com/4RC8rgC.png',
+      midright: 'https://i.imgur.com/AtT3tI5.png',
+      botleft: 'https://i.imgur.com/Fixw4Ra.png',
+      botcenter: 'https://i.imgur.com/NuIoBuI.png',
+      botright: 'https://i.imgur.com/Z3AM4Tt.png',
+    };
+    for (const vehicle of accident.vehicles) {
+      (vehicle as any).damageOpacities = { topleft: 0, topcenter: 0, topright: 0, midleft: 0, midcenter: 0, midright: 0, botleft: 0, botcenter: 0, botright: 0 };
+      for (const damage of vehicle.damages) {
+        const opacity = Object.keys(damagesUrl)[damage];
+        (vehicle as any).damageOpacities[opacity] = 0.4;
+      }
+      console.log((vehicle as any).damageOpacities);
+    }
+    console.log(accident.vehicles);
+    res.render('report.hbs', { accident, banner, logo, damagesUrl });
+    /*res.render('report.hbs', { accident, banner, logo, damages }, async (err, html) => {
       this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
         res.contentType('application/pdf');
         res.end(buffer);
       });
-    });
+    });*/
   }
 }
