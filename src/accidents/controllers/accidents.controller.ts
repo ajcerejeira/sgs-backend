@@ -101,15 +101,13 @@ export class AccidentsController {
         const opacity = Object.keys(damagesUrl)[damage];
         (vehicle as any).damageOpacities[opacity] = 0.4;
       }
-      console.log((vehicle as any).damageOpacities);
     }
-    console.log(accident.vehicles);
-    res.render('report.hbs', { accident, banner, logo, damagesUrl });
-    /*res.render('report.hbs', { accident, banner, logo, damages }, async (err, html) => {
+    // res.render('report.hbs', { accident, banner, logo, damagesUrl });
+    res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
       this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
         res.contentType('application/pdf');
         res.end(buffer);
       });
-    });*/
+    });
   }
 }
