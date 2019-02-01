@@ -9,6 +9,8 @@ import {
   ValidationPipe,
   Res,
   InternalServerErrorException,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -23,6 +25,7 @@ import { Accident } from '../entities/accident.entity';
 import { Response } from 'express';
 
 @Controller('api/accidents')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiUseTags('accidents')
 export class AccidentsController {
   constructor(private readonly accidentsService: AccidentsService) {}

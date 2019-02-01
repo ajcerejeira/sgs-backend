@@ -21,14 +21,19 @@ export class VehiclesService {
     private readonly actorsService: ActorsService,
   ) {}
 
-  async list(accidentId: number): Promise<Vehicle[]> {
-    return await this.vehicleRepository
+  async list(accidentId: number): Promise<any[]> {
+    const vehicles = await this.vehicleRepository
       .createQueryBuilder('vehicle')
       .leftJoinAndSelect('vehicle.meta', 'meta')
       .leftJoinAndSelect('vehicle.driver', 'driver')
       .leftJoinAndSelect('driver.person', 'person')
       .where('vehicle.accident.id = :accidentId', { accidentId })
       .getMany();
+    return vehicles.map(vehicle => {
+      const pictures = vehicle.pictures.map((picture, i) => `https://sgs-backend.herokuapp.com/api/accidents/${accidentId}/vehicles/${vehicle.id}/pictures/${i}`);
+      console.log(pictures);
+      return { ...vehicle, pictures };
+    });
   }
 
   async create(accidentId: number, vehicle: Vehicle): Promise<Vehicle> {
