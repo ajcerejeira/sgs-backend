@@ -109,7 +109,7 @@ export class ActorsController {
   async signature( @Param('accidentId') accidentId: number, @Param('id') id: number, @Res() res: Response) {
     const actor = await this.actorsService.detail(accidentId, id);
     if (actor.signature) {
-      res.setHeader('Content-Type', actor.mimetype);
+      res.setHeader('Content-Type', 'image/png');
       res.end(actor.signature, 'utf8');
     } else {
       throw new NotFoundException();
