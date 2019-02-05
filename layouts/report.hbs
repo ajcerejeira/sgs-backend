@@ -127,6 +127,11 @@
                   {{ this.person.zipCode }}</span>
               </div>
             </li>
+            <li class="list-group-item">
+              <div class="row">
+                <img class="img-fluid" src="{{ this.signature }}">
+              </div>
+            </li>
           </ul>
         </section>
         {{/each}}
@@ -141,7 +146,10 @@
         </h2>
       </header>
       {{#each accident.vehicles }}
+        <img src="{{ this }}">
+      {{/each}}
       <section class="card my-4">
+        {{#each this.vehicles.pictures}}
         <ul class="list-group list-group-flush">
           <li class="list-group-item bg-light">
             <i class="far fa-id-card"></i>
