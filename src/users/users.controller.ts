@@ -60,7 +60,7 @@ export class UsersController {
     @Body(new ValidationPipe()) user: User,
     @UploadedFile() avatar?,
   ): Promise<User> {
-    this.mailService.sendMail(user.email);
+    this.mailService.sendConfirmationEmail(user.email);
     if (avatar) {
       user.avatar = avatar.buffer;
       user.mimetype = avatar.mimetype;

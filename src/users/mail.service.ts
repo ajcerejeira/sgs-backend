@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+
 const sgTransport = require('nodemailer-sendgrid-transport');
 
 @Injectable()
@@ -9,22 +10,57 @@ export class MailService {
   public message?: string;
   constructor() {}
 
-  async sendMail(email: string) {
-    const mailOptions = {
+  async sendConfirmationEmail(email: string) {
+    var mailOptions = {
       from: 'noreply@sgs.com',
       to: email,
       subject: 'Confirmação de registo',
-      html: 'Bem vindo ao SGS, a sua aplicação está pronta a usar',
+      text:
+        'Bem vindo ao Sistema de Gestão de Sinistros!\n\n' +
+        'A sua aplicação está pronta a ser usada.\n\n' +
+        'Clique no link seguinte para aceder ao SGS:\n\n' +
+        'https://ajcerejeira.github.io/sgs-frontend/#/login\n\n',
     };
-    const options = {
+    console.log(mailOptions);
+
+    var options = {
       service: 'SendGrid',
       auth: {
         api_key:
-          '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',
+          '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',
       },
     };
-    const transporter = nodemailer.createTransport(sgTransport(options));
-    transporter.sendMail(mailOptions, (err, info) => {
+
+    var transporter = nodemailer.createTransport(sgTransport(options));
+
+    transporter.sendMail(mailOptions, function(err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Message sent: ' + info.response);
+      }
+    });
+  }
+
+  async sendPasswordEmail(email: string) {
+    var mailOptions = {
+      from: 'noreply@sgs.com',
+      to: email,
+      subject: 'Alteração de password',
+      html:
+        'Efectuou recentemente um pedido para repor a sua palavra-passe em SGS. Para concluir o processo' +
+        'clique na ligação abaixo: \n',
+    };
+    console.log(mailOptions);
+    var options = {
+      service: 'SendGrid',
+      auth: {
+        api_key:
+          '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',
+      },
+    };
+    var transporter = nodemailer.createTransport(sgTransport(options));
+    transporter.sendMail(mailOptions, function(err, info) {
       if (err) {
         console.log(err);
       } else {
