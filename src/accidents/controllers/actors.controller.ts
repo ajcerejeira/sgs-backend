@@ -110,7 +110,7 @@ export class ActorsController {
     const actor = await this.actorsService.detail(accidentId, id);
     if (actor.signature) {
       res.setHeader('Content-Type', 'image/png');
-      res.end(actor.signature, 'utf8');
+      res.end(actor.signature);
     } else {
       throw new NotFoundException();
     }
