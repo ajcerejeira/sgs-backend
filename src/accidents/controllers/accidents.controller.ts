@@ -126,6 +126,9 @@ export class AccidentsController {
         const opacity = Object.keys(damagesUrl)[damage];
         (vehicle as any).damageOpacities[opacity] = 0.4;
       }
+      for (let i = 0; i < vehicle.pictures.length; i++) {
+        (vehicle.pictures[i] as any) = `https://sgs-backend.herokuapp.com/api/accidents/${accident.id}/vehicles/${vehicle.id}/pictures/${i}`;
+      }
     }
     res.render('report.hbs', { accident, banner, logo, damagesUrl });
     /*res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
