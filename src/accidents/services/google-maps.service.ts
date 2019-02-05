@@ -77,7 +77,7 @@ export class GoogleMapsService {
           .filter(feature => feature.geometry.type === 'Polygon')
           .map(feature => {
             const polygon = (feature.geometry as Polygon).coordinates;
-            return `&path=color:0xff0000ff|weight:5${polygon.map(([lat, lng]) => `${lat},${lng}`).join('|')}` 
+            return `&path=color:0x0x1465aa|weight:2|fillcolor:0x1465aa2e|${polygon.map(([lat, lng]) => `${lat},${lng}`).join('|')}` 
           })
         .join('')
       : '';
@@ -86,6 +86,11 @@ export class GoogleMapsService {
     }&size=${this.width}x${this.height}${markers}${polygons}&key=${this.key}`;
   }
 
+/*   https://maps.googleapis.com/maps/api/staticmap
+    ?center=41.3483108,-8.5204344&zoom=19&size=600x600
+    &path=color:0xff0000ff|weight:5|41.34835976579185,-8.519212331213339|41.348383928417924,-8.519778922476235|41.34811686184832,-8.520309999861183|41.34790745126544,-8.519110407270773
+    &key=AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs
+ */
   async getAddress(lat: number, lon: number): Promise<string | null> {
     const url = `${this.geocoderApi}?latlng=${lat},${lon}&key=${this.key}`;
     const response = await this.httpService.get(url).toPromise();
