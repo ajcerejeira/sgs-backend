@@ -4,6 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Person } from './person.entity';
 import { Vehicle } from './vehicle.entity';
 import { Accident } from './accident.entity';
+import { Exclude } from 'class-transformer';
 
 export enum Role {
   Driver = 'Driver',
@@ -58,4 +59,14 @@ export class Actor {
   @IsOptional()
   @Column('float', { nullable: true })
   alcoholTest?: number;
+
+  @IsOptional()
+  @Exclude()
+  @Column({ nullable: true })
+  mimetype?: string;
+
+  @IsOptional()
+  @Exclude()
+  @Column('bytea', { nullable: true })
+  signature?: Buffer;
 }

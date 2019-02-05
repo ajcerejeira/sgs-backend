@@ -7,15 +7,22 @@ import {
   Post,
   Put,
   ValidationPipe,
+  UseInterceptors,
+  FileInterceptor,
+  UploadedFile,
+  Res,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiUseTags,
+  ApiProduces,
 } from '@nestjs/swagger';
 import { Actor } from '../entities/actor.entity';
 import { ActorsService } from '../services/actors.service';
+import { Response } from 'express';
 
 @Controller('api/accidents/:accidentId/actors')
 @ApiUseTags('accidents')
@@ -37,10 +44,17 @@ export class ActorsController {
     description: 'Created actor',
     type: Actor,
   })
+  @UseInterceptors(FileInterceptor('signature'))
   async create(
     @Param('accidentId') accidentId: number,
     @Body(new ValidationPipe()) actor: Actor,
+    @UploadedFile() signature?
   ): Promise<Actor> {
+    console.log(accidentId, actor);
+    if (signature) {
+      actor.signature = signature.buffer;
+      actor.signature = signature.mimetype;
+    }
     return this.actorsService.create(accidentId, actor);
   }
 
@@ -58,6 +72,7 @@ export class ActorsController {
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('signature'))
   @ApiCreatedResponse({
     description: 'Updated actor',
     type: Actor,
@@ -67,7 +82,12 @@ export class ActorsController {
     @Param('accidentId') accidentId: number,
     @Param('id') id: number,
     @Body(new ValidationPipe()) actor: Actor,
+    @UploadedFile() signature?,
   ): Promise<Actor> {
+    if (signature) {
+      actor.signature = signature.buffer;
+      actor.mimetype = signature.mimetype;
+    }
     return this.actorsService.update(accidentId, id, actor);
   }
 
@@ -79,5 +99,18 @@ export class ActorsController {
     @Param('id') id: number,
   ): Promise<Actor> {
     return this.actorsService.delete(accidentId, id);
+  }
+
+  @Get(':id/signature')
+  @ApiOkResponse({ description: 'Picture of the user signature' })
+  @ApiProduces('image/jpeg', 'image/jpg', 'image/png')
+  async signature( @Param('accidentId') accidentId: number, @Param('id') id: number, @Res() res: Response) {
+    const actor = await this.actorsService.detail(accidentId, id);
+    if (actor.signature) {
+      res.setHeader('Content-Type', actor.mimetype);
+      res.end(actor.signature, 'utf8');
+    } else {
+      throw new NotFoundException();
+    }
   }
 }
