@@ -203,6 +203,36 @@
             </div>
           </li>
           <li class="list-group-item bg-light">
+            <i class="fas fa-camera"></i>
+            Fotografias
+          </li>
+          <li class="list-group-item">
+            <div class=""
+                 style="-webkit-box-align: center!important;
+                        -ms-flex-align: center!important;
+                        align-items: center!important;
+                        -webkit-box-pack: center!important;
+                        -ms-flex-pack: center!important;
+                        justify-content: center!important;
+                        display: -webkit-box;
+                        display: -ms-flexbox;
+                        display: flex;
+                        -ms-flex-wrap: wrap;
+                        flex-wrap: wrap;
+                        margin-right: -15px;
+                        margin-left: -15px;">
+              {{#each this.pictures }}
+              <div class="col-1 p-0"
+                   style="-webkit-box-flex: 0;
+                          -ms-flex: 0 0 8.333333%;
+                          flex: 0 0 8.333333%;
+                          padding: 0; margin: 0;">
+                <img src="{{ this }}" class="img-fluid">
+              </div>
+              {{/each }}
+            </div>
+          </li>
+          <li class="list-group-item bg-light">
             <i class="fas fa-hammer"></i> Danos
           </li>
           <li class="list-group-item">
