@@ -61,12 +61,6 @@ export class Actor {
   alcoholTest?: number;
 
   @IsOptional()
-  @Exclude()
   @Column({ nullable: true })
-  mimetype?: string;
-
-  @IsOptional()
-  @Exclude()
-  @Column('bytea', { nullable: true })
-  signature?: Buffer;
+  signature?: string;
 }
