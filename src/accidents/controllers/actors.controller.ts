@@ -12,6 +12,7 @@ import {
   UploadedFile,
   Res,
   NotFoundException,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -25,6 +26,7 @@ import { ActorsService } from '../services/actors.service';
 import { Response } from 'express';
 
 @Controller('api/accidents/:accidentId/actors')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiUseTags('accidents')
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
@@ -53,7 +55,7 @@ export class ActorsController {
     console.log(accidentId, actor);
     if (signature) {
       actor.signature = signature.buffer;
-      actor.signature = signature.mimetype;
+      actor.mimetype = 'image/png';
     }
     return this.actorsService.create(accidentId, actor);
   }
@@ -86,7 +88,7 @@ export class ActorsController {
   ): Promise<Actor> {
     if (signature) {
       actor.signature = signature.buffer;
-      actor.mimetype = signature.mimetype;
+      actor.mimetype = 'image/png';
     }
     return this.actorsService.update(accidentId, id, actor);
   }
