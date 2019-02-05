@@ -130,12 +130,12 @@ export class AccidentsController {
         (vehicle.pictures[i] as any) = `https://sgs-backend.herokuapp.com/api/accidents/${accident.id}/vehicles/${vehicle.id}/pictures/${i}`;
       }
     }
-    res.render('report.hbs', { accident, banner, logo, damagesUrl });
-    /*res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
+    // res.render('report.hbs', { accident, banner, logo, damagesUrl });
+    res.render('report.hbs', { accident, banner, logo }, async (err, html) => {
       this.accidentsService.html2pdf(html, (pdfErr, buffer) => {
         res.contentType('application/pdf');
         res.end(buffer);
       });
-    });*/
+    });
   }
 }
