@@ -77,7 +77,7 @@ export class GoogleMapsService {
           .filter(feature => feature.geometry.type === 'Polygon')
           .map(feature => {
             const polygon = (feature.geometry as Polygon).coordinates;
-            return `&path=color:0x1465aa2e|weight:2|fillcolor:0x1465aa2e${polygon.map(([lat, lng]) => `${lat},${lng}`).join('|')}` 
+            return `&path=color:0x1465aa2e\|weight:2|fillcolor:0x1465aa2e${polygon.map(([lat, lng]) => `${lat},${lng}`).join('|')}` 
           })
         .join('')
       : '';
