@@ -1,7 +1,22 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { GeoJSON, FeatureCollection, Feature, Point } from 'geojson';
+import { GeoJSON, FeatureCollection, Feature, Point, Polygon } from 'geojson';
 const carRotations = require('../../../data/carRotations.json');
 const crosswalkRotations = require('../../../data/crosswalkRotations');
+
+/**
+ * {
+ *    "type": "Polygon",
+ *    "coordinates": [
+ *      [41.55860070636391,-8.397800775487667],
+ *      [41.55858465006615,-8.398281536062086],
+ *      [41.5579338772449,-8.398297629316176],
+ *      [41.558030215941756,-8.397350164373165]
+ *    ]},
+ *    "properties": {
+ *      "type": "polygon"
+ *    }
+ * }
+ */
 
 @Injectable()
 export class GoogleMapsService {
@@ -39,6 +54,7 @@ export class GoogleMapsService {
     const features = featureCollection ? featureCollection.features : [];
     const markers = features
       ? features
+          .filter(feature => feature.geometry.type === 'Point')
           .map(feature => {
             const [lat, lon] = (feature.geometry as Point).coordinates;
             let icon = '';
@@ -56,9 +72,18 @@ export class GoogleMapsService {
           })
           .join('')
       : '';
+    const polygons = features
+      ? features
+          .filter(feature => feature.geometry.type === 'Polygon')
+          .map(feature => {
+            const polygon = (feature.geometry as Polygon).coordinates;
+            return `&path=color:0xff0000ff|weight:5${polygon.map(([lat, lng]) => `${lat},${lng}`).join('|')}` 
+          })
+        .join('')
+      : '';
     return `${this.staticApi}?center=${centerLat},${centerLon}&zoom=${
       this.zoom
-    }&size=${this.width}x${this.height}${markers}&key=${this.key}`;
+    }&size=${this.width}x${this.height}${markers}${polygons}&key=${this.key}`;
   }
 
   async getAddress(lat: number, lon: number): Promise<string | null> {
