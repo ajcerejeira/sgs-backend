@@ -5,6 +5,7 @@ import * as pdf from 'html-pdf';
 import { Accident } from '../entities/accident.entity';
 import { GoogleMapsService } from './google-maps.service';
 import { FeatureCollection } from 'geojson';
+import { User } from 'dist/users/user.entity';
 
 @Injectable()
 export class AccidentsService {
@@ -14,19 +15,21 @@ export class AccidentsService {
     private readonly googleMapsService: GoogleMapsService,
   ) {}
 
-  async list(): Promise<Accident[]> {
+  async list(user: User): Promise<Accident[]> {
     return await this.accidentRepository
       .createQueryBuilder('accident')
       .leftJoinAndSelect('accident.vehicles', 'vehicles')
       .leftJoinAndSelect('vehicles.meta', 'meta')
       .leftJoinAndSelect('accident.actors', 'actors')
       .leftJoinAndSelect('actors.person', 'person')
+      .where('accident.user.id = :userId', { userId: user.id })
       .getMany();
   }
 
-  async create(accident: Accident): Promise<Accident> {
+  async create(accident: Accident, user: User): Promise<Accident> {
     return await this.accidentRepository.save({
       ...accident,
+      user,
       address: await this.googleMapsService.getAddress(
         accident.position[0],
         accident.position[1],

@@ -18,11 +18,14 @@ import { VehiclesController } from './controllers/vehicles.controller';
 import { VehiclesService } from './services/vehicles.service';
 import { ActorsService } from './services/actors.service';
 import { GoogleMapsService } from './services/google-maps.service';
+import { UsersModule } from '../users/users.module';
+import { User } from '../users/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Accident, Actor, Person, Vehicle, VehicleMeta]),
+    TypeOrmModule.forFeature([Accident, Actor, Person, Vehicle, VehicleMeta, User]),
     HttpModule,
+    UsersModule,
   ],
   controllers: [AccidentsController, ActorsController, VehiclesController],
   providers: [

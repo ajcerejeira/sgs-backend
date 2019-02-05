@@ -1,13 +1,19 @@
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 import { IsDateString, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Vehicle } from './vehicle.entity';
 import { Actor } from './actor.entity';
+import { User } from '../../users/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Accident {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(type => User, { onDelete: 'CASCADE' })
+  @Exclude()
+  user: User;
 
   @ApiModelPropertyOptional({
     type: 'string',
