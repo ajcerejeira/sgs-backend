@@ -5,7 +5,7 @@ import * as pdf from 'html-pdf';
 import { Accident } from '../entities/accident.entity';
 import { GoogleMapsService } from './google-maps.service';
 import { FeatureCollection } from 'geojson';
-import { User } from 'dist/users/user.entity';
+import { User } from '../../users/user.entity';
 
 @Injectable()
 export class AccidentsService {
