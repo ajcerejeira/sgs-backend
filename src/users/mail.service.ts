@@ -26,8 +26,7 @@ export class MailService {
     var options = {
       service: 'SendGrid',
       auth: {
-        api_key:
-          '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',
+        api_key: process.env.SENDGRID_API_KEY
       },
     };
 
