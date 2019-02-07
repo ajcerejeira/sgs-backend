@@ -67,12 +67,6 @@
                 <span class="col-9">{{ this.person.identityDocumentExpirationDate }}</span>
               </div>
             </li>
-            <li class="list-group-item">
-              <div class="row">
-                <strong class="col-3">Emitido por</strong>
-                <span class="col-9">{{ this.person.identityDocumentEmitedBy }}</span>
-              </div>
-            </li>
             <li class="list-group-item bg-light">
               <i class="far fa-user-circle"></i>
               Dados pessoais
@@ -109,22 +103,11 @@
             </li>
             <li class="list-group-item">
               <div class="row">
-                <strong class="col-3">Naturalidade</strong>
-                <span class="col-9">{{ this.person.naturality }}</span>
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <strong class="col-3">Filiação</strong>
-                <span class="col-9">
-                  {{#each this.person.parentage }} {{ this }},{{/each}}
-              </div>
-            </li>
-            <li class="list-group-item">
-              <div class="row">
                 <strong class="col-3">Morada</strong>
-                <span class="col-9">{{ this.perosn.address}} {{ this.person.doorNumber }} , {{ this.person.locality }}.
-                  {{ this.person.zipCode }}</span>
+                <span class="col-9">
+                  {{ this.person.locality }}.
+                  {{ this.person.zipCode }}
+                </span>
               </div>
             </li>
             <li class="list-group-item">
