@@ -23,7 +23,7 @@ export class GoogleMapsService {
   private readonly geocoderApi =
     'https://maps.googleapis.com/maps/api/geocode/json';
   private readonly staticApi = 'https://maps.googleapis.com/maps/api/staticmap';
-  private readonly key = 'AIzaSyDJ3xMYDRkdSoSpIERsYylJWqmv3D-rpXs';
+  private readonly key = 'AIzaSyDKc2OgSaAmZX59vVNlAtO2hjuFLpTLdiI';
   private readonly zoom = 19;
   private readonly width = 600;
   private readonly height = 600;
